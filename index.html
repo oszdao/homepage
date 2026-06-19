@@ -1,1 +1,1602 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ইতিহাস পাঠশালা</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.cdnfonts.com/css/solaimanlipi" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --blue:#0057D9;--blue-dk:#003FA0;--blue-lt:#E8F0FE;
+  --green:#00B894;--green-lt:#d4edda;
+  --red:#E74C3C;--red-lt:#f8d7da;
+  --orange:#FF6B35;--yellow:#FFD700;
+  --purple:#7c3aed;--purple-lt:#ede9fe;
+  --gray-50:#F8FAFC;--gray-100:#F1F5F9;--gray-200:#E2E8F0;
+  --gray-400:#94A3B8;--gray-600:#475569;--gray-800:#1E293B;
+  --white:#fff;
+  --f:'SolaimanLipi','Inter',sans-serif;--fd:'Poppins',sans-serif;
+}
+body{font-family:var(--f);background:var(--gray-50);color:var(--gray-800);min-height:100vh}
 
+/* ── TOPBAR ── */
+.topbar{background:var(--blue);padding:0 18px;height:54px;display:flex;align-items:center;gap:10px;
+  box-shadow:0 2px 10px rgba(0,87,217,.3);position:sticky;top:0;z-index:300}
+.tlogo{font-family:var(--fd);font-size:18px;font-weight:800;color:#fff;white-space:nowrap;cursor:pointer;flex-shrink:0}
+.tlogo span{color:var(--yellow)}
+.breadcrumb{flex:1;display:flex;align-items:center;gap:4px;font-size:12px;color:rgba(255,255,255,.75);
+  overflow:hidden;white-space:nowrap;min-width:0}
+.bc{padding:3px 7px;border-radius:5px;cursor:pointer;transition:background .15s;flex-shrink:0}
+.bc:hover{background:rgba(255,255,255,.15);color:#fff}
+.bc-sep{color:rgba(255,255,255,.35);font-size:10px;flex-shrink:0}
+.tright{display:flex;align-items:center;gap:6px;margin-left:auto;flex-shrink:0}
+.tuser{display:none;align-items:center;gap:5px;background:rgba(255,255,255,.12);
+  border:1px solid rgba(255,255,255,.2);border-radius:8px;padding:5px 10px;
+  font-size:12px;font-weight:600;color:#fff;cursor:pointer;white-space:nowrap}
+.tuser:hover{background:rgba(255,255,255,.2)}
+#timer-el{display:none;align-items:center;gap:6px;background:rgba(255,255,255,.15);
+  border:1px solid rgba(255,255,255,.25);border-radius:8px;padding:5px 12px;
+  font-size:15px;font-weight:700;color:#fff;white-space:nowrap}
+#timer-el.warn{background:rgba(231,76,60,.5);border-color:#e74c3c;animation:blink .8s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.5}}
+#snd-btn{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);
+  color:#fff;border-radius:8px;padding:5px 9px;font-size:15px;cursor:pointer}
+
+/* ── SCREENS ── */
+.screen{display:none}.screen.active{display:block}
+#login-screen.active{display:flex}
+
+/* ── STICKY BACK BUTTON ── */
+.sticky-back{
+  position:fixed;bottom:22px;left:50%;transform:translateX(-50%);
+  z-index:250;display:none;
+  background:var(--gray-800);color:#fff;
+  border:none;border-radius:50px;
+  padding:11px 24px;font-size:14px;font-weight:700;
+  font-family:var(--f);cursor:pointer;
+  box-shadow:0 6px 24px rgba(0,0,0,.25);
+  transition:all .2s;align-items:center;gap:8px;
+  white-space:nowrap;
+}
+.sticky-back:hover{background:#000;transform:translateX(-50%) translateY(-2px);box-shadow:0 10px 28px rgba(0,0,0,.3)}
+.sticky-back.show{display:flex}
+
+/* ── UPGRADE MODAL ── */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:999;
+  align-items:center;justify-content:center;padding:20px}
+.modal-bg.open{display:flex}
+.modal-box{background:#fff;border-radius:20px;max-width:420px;width:100%;overflow:hidden;
+  box-shadow:0 20px 60px rgba(0,0,0,.3);animation:popIn .25s ease}
+@keyframes popIn{from{transform:scale(.9);opacity:0}to{transform:scale(1);opacity:1}}
+.modal-hero{background:linear-gradient(135deg,var(--purple),#6d28d9);padding:26px 22px;text-align:center;color:#fff}
+.modal-hero .mh-ic{font-size:38px;margin-bottom:8px}
+.modal-hero h3{font-family:var(--fd);font-size:20px;font-weight:800;margin-bottom:5px}
+.modal-hero p{font-size:13px;opacity:.85}
+.modal-body{padding:18px}
+.modal-feats{display:flex;flex-direction:column;gap:9px;margin-bottom:14px}
+.modal-feat{display:flex;align-items:center;gap:10px;font-size:13px;font-weight:500;
+  background:var(--gray-50);padding:9px 13px;border-radius:9px;border:1px solid var(--gray-200)}
+.feat-ic{font-size:17px}
+.modal-contact{background:var(--purple-lt);border:1.5px solid #c4b5fd;border-radius:9px;
+  padding:11px 14px;font-size:13px;font-weight:600;color:var(--purple);text-align:center;margin-bottom:12px}
+.modal-close-btn{width:100%;background:var(--gray-100);border:1.5px solid var(--gray-200);
+  color:var(--gray-600);border-radius:9px;padding:11px;font-size:14px;font-weight:700;
+  cursor:pointer;font-family:var(--f)}
+
+/* ── LOGIN ── */
+#login-screen{align-items:center;justify-content:center;min-height:calc(100vh - 54px);
+  padding:20px;background:linear-gradient(135deg,#f0f4ff,#faf5ff)}
+.pw-card{background:#fff;border-radius:20px;box-shadow:0 8px 40px rgba(0,0,0,.12);
+  width:100%;max-width:420px;overflow:hidden}
+.pw-hero{background:linear-gradient(135deg,var(--blue),var(--blue-dk));padding:30px 22px;text-align:center}
+.pw-hero .ico{font-size:44px;margin-bottom:8px}
+.pw-hero h2{font-size:21px;font-weight:800;color:#fff;margin-bottom:5px}
+.pw-hero p{color:rgba(255,255,255,.78);font-size:13px}
+.pw-body{padding:22px}
+.pw-badge{background:linear-gradient(135deg,#f0fdf4,#dcfce7);border:1.5px solid #86efac;
+  border-radius:9px;padding:10px 13px;margin-bottom:12px;display:none;align-items:center;gap:9px}
+.pw-badge.show{display:flex}
+.pw-av{width:32px;height:32px;border-radius:50%;background:var(--green);color:#fff;
+  font-size:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.pw-uname{font-weight:700;font-size:14px;color:#166534}
+.pw-urole{font-size:11px;color:#16a34a}
+.pw-msg{border-radius:8px;padding:9px 13px;font-size:13px;font-weight:600;
+  margin-bottom:11px;display:none;align-items:center;gap:7px}
+.pw-msg.show{display:flex}
+.pw-msg.err{background:#fff0f0;border:1.5px solid #fca5a5;color:#dc2626}
+.pw-msg.suc{background:#f0fdf4;border:1.5px solid #86efac;color:#16a34a}
+.pw-msg.dev{background:#fff7ed;border:1.5px solid #fed7aa;color:#c05621}
+.pw-lbl{font-size:13px;font-weight:700;color:var(--gray-600);margin-bottom:6px;display:block}
+.pw-wrap{position:relative;margin-bottom:5px}
+.pw-inp{width:100%;border:2px solid var(--gray-200);border-radius:9px;
+  padding:11px 42px 11px 13px;font-size:16px;font-family:var(--f);
+  color:var(--gray-800);outline:none;transition:border-color .2s}
+.pw-inp:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(0,87,217,.1)}
+.pw-eye{position:absolute;right:11px;top:50%;transform:translateY(-50%);
+  background:none;border:none;cursor:pointer;font-size:17px;color:var(--gray-400)}
+.pw-att{font-size:12px;color:var(--gray-400);text-align:center;margin-top:5px;min-height:16px}
+.pw-submit{width:100%;margin-top:13px;background:linear-gradient(135deg,var(--blue),var(--blue-dk));
+  color:#fff;border:none;border-radius:9px;padding:13px;font-size:15px;font-weight:800;
+  cursor:pointer;font-family:var(--f);transition:all .2s;box-shadow:0 4px 14px rgba(0,87,217,.3)}
+.pw-submit:hover:not(:disabled){transform:translateY(-2px)}
+.pw-submit:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.pw-foot{padding:11px 22px;border-top:1px solid var(--gray-200);text-align:center;font-size:12px;color:var(--gray-400)}
+
+/* ── PAGE COMMON ── */
+.page-wrap{max-width:1100px;margin:0 auto;padding:26px 18px 100px}
+.sec-hd{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:18px;gap:10px;flex-wrap:wrap}
+.sec-hd h2{font-family:var(--fd);font-size:20px;font-weight:700;color:var(--gray-800)}
+.sec-hd p{font-size:13px;color:var(--gray-400);margin-top:3px}
+.hero-bar{padding:32px 20px 26px;text-align:center;color:#fff}
+.hero-bar h2{font-family:var(--fd);font-size:22px;font-weight:800;margin-bottom:6px}
+.hero-bar p{font-size:13px;opacity:.82}
+
+/* ────────────────────────────────
+   FREE USER DASHBOARD (home)
+──────────────────────────────── */
+.free-home-hero{
+  background:linear-gradient(135deg,#1e3a5f 0%,#0057D9 60%,#003FA0 100%);
+  padding:40px 20px 30px;text-align:center;position:relative;overflow:hidden}
+.free-home-hero::before{content:'';position:absolute;inset:0;
+  background:url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23fff' fill-opacity='0.03'%3E%3Cpath d='M20 20h20v20H20zM0 0h20v20H0z'/%3E%3C/g%3E%3C/svg%3E")}
+.free-home-hero h1{font-family:var(--fd);font-size:clamp(20px,5vw,36px);font-weight:800;color:#fff;margin-bottom:8px;position:relative}
+.free-home-hero h1 em{color:var(--yellow);font-style:normal}
+.free-home-hero p{color:rgba(255,255,255,.78);font-size:14px;margin-bottom:16px;position:relative}
+.user-chip{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.15);
+  border:1px solid rgba(255,255,255,.25);border-radius:20px;padding:7px 16px;
+  color:#fff;font-size:13px;font-weight:600;position:relative}
+.paid-badge{background:var(--yellow);color:#1a1a2e;font-size:10px;font-weight:800;padding:2px 7px;border-radius:10px}
+.free-badge{background:rgba(255,255,255,.2);color:#fff;font-size:10px;font-weight:700;padding:2px 7px;border-radius:10px}
+.free-home-stats{display:flex;justify-content:center;gap:22px;margin-top:18px;flex-wrap:wrap;position:relative}
+.hs-i .num{font-family:var(--fd);font-size:19px;font-weight:700;color:#fff}
+.hs-i .lbl{font-size:11px;color:rgba(255,255,255,.6)}
+
+/* Free alert banner */
+.free-alert{background:linear-gradient(90deg,#fff7ed,#fef9f0);border:1.5px solid #fed7aa;
+  border-radius:12px;padding:14px 18px;margin-bottom:20px;
+  display:flex;align-items:center;gap:12px}
+.free-alert-ic{font-size:26px;flex-shrink:0}
+.free-alert-text h4{font-weight:700;font-size:14px;color:#c05621;margin-bottom:3px}
+.free-alert-text p{font-size:13px;color:#92400e;line-height:1.5}
+.btn-upgrade{background:linear-gradient(135deg,var(--purple),#6d28d9);color:#fff;
+  border:none;border-radius:8px;padding:8px 16px;font-size:13px;font-weight:700;
+  cursor:pointer;font-family:var(--f);white-space:nowrap;margin-left:auto;flex-shrink:0}
+.btn-upgrade:hover{transform:translateY(-1px)}
+
+/* ────────────────────────────────
+   PAID USER DASHBOARD (home)
+──────────────────────────────── */
+.paid-home-hero{
+  background:linear-gradient(135deg,#1a1a2e 0%,#0f3460 40%,#533483 100%);
+  padding:40px 20px 30px;text-align:center;position:relative;overflow:hidden}
+.paid-home-hero::after{content:'⭐';position:absolute;font-size:200px;opacity:.04;
+  right:-40px;top:-40px;line-height:1}
+.paid-home-hero h1{font-family:var(--fd);font-size:clamp(20px,5vw,36px);font-weight:800;color:#fff;margin-bottom:8px;position:relative}
+.paid-home-hero h1 em{color:var(--yellow);font-style:normal}
+.paid-home-hero p{color:rgba(255,255,255,.78);font-size:14px;margin-bottom:16px;position:relative}
+.paid-home-stats{display:flex;justify-content:center;gap:22px;margin-top:18px;flex-wrap:wrap;position:relative}
+
+/* Paid welcome strip */
+.paid-strip{background:linear-gradient(90deg,#0f3460,#533483);
+  border-radius:12px;padding:14px 18px;margin-bottom:20px;
+  display:flex;align-items:center;gap:12px}
+.paid-strip-ic{font-size:26px;flex-shrink:0}
+.paid-strip h4{font-weight:700;font-size:14px;color:#fff;margin-bottom:2px}
+.paid-strip p{font-size:12px;color:rgba(255,255,255,.7)}
+
+/* ── SUBJECT CARDS ── */
+.subj-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:16px}
+.subj-card{background:#fff;border-radius:16px;border:2px solid var(--gray-200);
+  overflow:hidden;cursor:pointer;transition:all .2s}
+.subj-card:hover{border-color:var(--blue);box-shadow:0 8px 28px rgba(0,87,217,.12);transform:translateY(-3px)}
+.subj-card.soon{opacity:.6;cursor:default}
+.subj-card.soon:hover{transform:none;box-shadow:none;border-color:var(--gray-200)}
+.subj-card.locked-card{position:relative;cursor:default}
+.subj-card.locked-card:hover{transform:none;box-shadow:none;border-color:var(--gray-200)}
+.subj-banner{height:88px;display:flex;align-items:center;justify-content:center;
+  position:relative;font-size:42px}
+.subj-corner{position:absolute;top:8px;right:8px;font-size:11px;font-weight:700;
+  padding:3px 8px;border-radius:10px}
+.subj-corner.free-c{background:var(--green);color:#fff}
+.subj-corner.soon-c{background:var(--gray-400);color:#fff}
+.subj-corner.lock-c{background:var(--purple);color:#fff}
+.subj-body{padding:14px 16px}
+.subj-body h3{font-weight:700;font-size:15px;color:var(--gray-800);margin-bottom:4px}
+.subj-body>p{font-size:12px;color:var(--gray-600);margin-bottom:9px;line-height:1.5}
+.subj-metas{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:11px}
+.sm-t{font-size:11px;color:var(--gray-600);background:var(--gray-50);
+  padding:3px 7px;border-radius:5px;border:1px solid var(--gray-200)}
+.subj-footer{display:flex;justify-content:space-between;align-items:center}
+.btn-enter{background:var(--blue);color:#fff;border:none;border-radius:8px;
+  padding:7px 14px;font-size:13px;font-weight:700;cursor:pointer;font-family:var(--f);transition:all .2s}
+.btn-enter:hover{background:var(--blue-dk);transform:translateY(-1px)}
+.lock-overlay{position:absolute;inset:0;background:rgba(248,250,252,.9);
+  backdrop-filter:blur(3px);display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:8px;border-radius:14px}
+.lock-overlay .lo-ic{font-size:30px}
+.lock-overlay .lo-msg{font-size:13px;font-weight:700;color:var(--gray-600)}
+.lock-overlay .lo-btn{background:linear-gradient(135deg,var(--purple),#6d28d9);color:#fff;
+  border:none;border-radius:8px;padding:7px 16px;font-size:12px;font-weight:700;
+  cursor:pointer;font-family:var(--f)}
+
+/* ── SUBTOPIC CARDS ── */
+.st-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px}
+.st-card{background:#fff;border-radius:13px;border:2px solid var(--gray-200);
+  padding:16px 18px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:12px}
+.st-card:hover{border-color:var(--blue);box-shadow:0 6px 20px rgba(0,87,217,.1);transform:translateX(4px)}
+.st-ic{font-size:30px;flex-shrink:0}
+.st-info h4{font-weight:700;font-size:15px;color:var(--gray-800);margin-bottom:2px}
+.st-info p{font-size:12px;color:var(--gray-400)}
+.st-arr{font-size:20px;color:var(--gray-300);margin-left:auto;flex-shrink:0}
+
+/* ── CHAPTER CARDS ── */
+.ch-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:13px}
+.ch-card{background:#fff;border-radius:13px;border:2px solid var(--gray-200);
+  overflow:hidden;transition:all .2s;position:relative}
+.ch-card.ok{cursor:pointer}
+.ch-card.ok:hover{border-color:var(--blue);box-shadow:0 6px 20px rgba(0,87,217,.1);transform:translateY(-2px)}
+.ch-card.locked{cursor:default}
+.ch-body{padding:16px}
+.ch-ic{font-size:28px;margin-bottom:8px}
+.ch-body h4{font-weight:700;font-size:15px;color:var(--gray-800);margin-bottom:4px}
+.ch-body p{font-size:12px;color:var(--gray-600);line-height:1.5;margin-bottom:10px}
+.ch-footer{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:5px}
+.ch-q{font-size:12px;color:var(--gray-400);font-weight:600}
+.free-tag{background:#dcfce7;color:#166534;font-size:11px;font-weight:700;padding:3px 7px;border-radius:5px;border:1px solid #86efac}
+.paid-tag{background:var(--purple-lt);color:var(--purple);font-size:11px;font-weight:700;padding:3px 7px;border-radius:5px;border:1px solid #c4b5fd}
+.ch-lock{position:absolute;inset:0;background:rgba(248,250,252,.9);backdrop-filter:blur(4px);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;border-radius:11px}
+.ch-lock-ic{font-size:26px}
+.ch-lock-msg{font-size:13px;font-weight:700;color:var(--gray-600)}
+.ch-lock-btn{background:linear-gradient(135deg,var(--purple),#6d28d9);color:#fff;border:none;
+  border-radius:7px;padding:6px 14px;font-size:12px;font-weight:700;cursor:pointer;font-family:var(--f)}
+
+/* ── MOCK TEST LIST (inside chapter) ── */
+#mocktest-screen.active{display:block}
+.mt-hero{background:linear-gradient(135deg,var(--blue),var(--blue-dk));padding:28px 20px 22px;color:#fff;text-align:center}
+.mt-hero h2{font-family:var(--fd);font-size:21px;font-weight:800;margin-bottom:5px}
+.mt-hero p{font-size:13px;opacity:.82}
+.mt-list{display:flex;flex-direction:column;gap:12px}
+.mt-item{background:#fff;border-radius:13px;border:2px solid var(--gray-200);
+  padding:16px 18px;display:flex;align-items:center;gap:14px;
+  transition:all .2s;position:relative}
+.mt-item.ok{cursor:pointer}
+.mt-item.ok:hover{border-color:var(--blue);box-shadow:0 4px 16px rgba(0,87,217,.1);transform:translateX(4px)}
+.mt-item.locked{cursor:default}
+.mt-item-num{width:40px;height:40px;border-radius:10px;background:var(--blue-lt);
+  color:var(--blue);font-family:var(--fd);font-size:16px;font-weight:800;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.mt-item.locked .mt-item-num{background:var(--gray-100);color:var(--gray-400)}
+.mt-item-info{flex:1;min-width:0}
+.mt-item-info h4{font-weight:700;font-size:15px;color:var(--gray-800);margin-bottom:3px}
+.mt-item-info p{font-size:12px;color:var(--gray-500);line-height:1.4}
+.mt-item-meta{display:flex;gap:8px;margin-top:6px;flex-wrap:wrap}
+.mt-meta-tag{font-size:11px;background:var(--gray-50);color:var(--gray-600);
+  padding:2px 8px;border-radius:5px;border:1px solid var(--gray-200);font-weight:600}
+.mt-item-action{flex-shrink:0}
+.btn-mt-start{background:var(--blue);color:#fff;border:none;border-radius:8px;
+  padding:8px 16px;font-size:13px;font-weight:700;cursor:pointer;font-family:var(--f);transition:all .2s}
+.btn-mt-start:hover{background:var(--blue-dk);transform:translateY(-1px)}
+.btn-mt-ext{background:var(--green);color:#fff;border:none;border-radius:8px;
+  padding:8px 16px;font-size:13px;font-weight:700;cursor:pointer;font-family:var(--f);
+  display:flex;align-items:center;gap:5px;transition:all .2s;text-decoration:none}
+.btn-mt-ext:hover{transform:translateY(-1px)}
+.mt-lock-strip{position:absolute;right:12px;top:50%;transform:translateY(-50%);
+  background:var(--purple-lt);border:1.5px solid #c4b5fd;border-radius:8px;
+  padding:6px 12px;font-size:12px;font-weight:700;color:var(--purple);cursor:pointer}
+.mt-free-badge{background:#dcfce7;color:#166534;font-size:10px;font-weight:700;
+  padding:2px 7px;border-radius:8px;border:1px solid #86efac}
+.mt-paid-badge{background:var(--purple-lt);color:var(--purple);font-size:10px;font-weight:700;
+  padding:2px 7px;border-radius:8px;border:1px solid #c4b5fd}
+
+/* ── START SCREEN ── */
+#start-screen.active{display:flex;align-items:center;justify-content:center;
+  min-height:calc(100vh - 54px);padding:20px}
+.start-card{background:#fff;border-radius:15px;box-shadow:0 4px 24px rgba(0,0,0,.1);
+  width:100%;max-width:620px;overflow:hidden}
+.start-hero{background:linear-gradient(135deg,var(--blue),var(--blue-dk));
+  padding:30px 22px;text-align:center;color:#fff}
+.start-hero .s-ico{font-size:34px;margin-bottom:8px}
+.start-hero h1{font-family:var(--fd);font-size:21px;font-weight:800;margin-bottom:5px}
+.start-hero p{font-size:13px;opacity:.82}
+.start-meta{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;padding:16px}
+.meta-box{background:var(--gray-50);border-radius:11px;padding:13px;text-align:center;border:1.5px solid var(--gray-200)}
+.meta-box .mi{font-size:20px;margin-bottom:4px}
+.meta-box .mv{font-weight:700;font-size:16px;color:var(--blue)}
+.meta-box .ml{font-size:11px;color:var(--gray-400);margin-top:2px}
+.start-rules{padding:0 16px 16px}
+.start-rules h3{font-size:13px;font-weight:700;margin-bottom:8px;color:var(--gray-800)}
+.start-rules ul{padding-left:16px;display:flex;flex-direction:column;gap:5px}
+.start-rules li{font-size:13px;color:var(--gray-600);line-height:1.5}
+.start-btns{padding:14px 16px;border-top:1px solid var(--gray-200);display:flex;justify-content:center;gap:10px}
+.btn-back-st{background:var(--gray-100);color:var(--gray-600);border:1.5px solid var(--gray-200);
+  padding:11px 18px;border-radius:9px;font-size:14px;font-weight:700;cursor:pointer;font-family:var(--f)}
+.btn-back-st:hover{background:var(--gray-200)}
+.btn-go{background:linear-gradient(135deg,var(--blue),var(--blue-dk));color:#fff;
+  padding:12px 30px;border-radius:9px;font-size:15px;font-weight:800;border:none;
+  cursor:pointer;font-family:var(--f);box-shadow:0 4px 14px rgba(0,87,217,.3)}
+.btn-go:hover{transform:translateY(-2px)}
+
+/* ── QUIZ ── */
+#quiz-screen.active{display:block}
+.layout{display:flex;max-width:1200px;margin:0 auto;gap:16px;padding:16px 16px 100px}
+.main-col{flex:1;min-width:0}
+.side-col{width:268px;flex-shrink:0}
+.card{background:#fff;border-radius:13px;box-shadow:0 2px 12px rgba(0,0,0,.06);overflow:hidden}
+.q-hd{background:linear-gradient(135deg,var(--blue),var(--blue-dk));padding:13px 17px;display:flex;align-items:center;justify-content:space-between}
+.q-tag{background:rgba(255,255,255,.2);color:#fff;font-size:12px;font-weight:700;padding:3px 9px;border-radius:18px}
+.q-prog{color:rgba(255,255,255,.85);font-size:13px;font-weight:600}
+.prog-bar{height:4px;background:rgba(255,255,255,.2);overflow:hidden}
+.prog-fill{height:100%;background:var(--yellow);transition:width .4s}
+.q-body{padding:20px}
+.q-num{display:inline-block;background:var(--blue-lt);color:var(--blue);font-size:12px;font-weight:700;padding:2px 9px;border-radius:18px;margin-bottom:10px}
+.q-txt{font-size:17px;font-weight:600;color:var(--gray-800);line-height:1.6;margin-bottom:18px}
+.opts{display:flex;flex-direction:column;gap:9px}
+.opt{display:flex;align-items:center;gap:11px;border:2px solid var(--gray-200);border-radius:9px;
+  padding:11px 14px;cursor:pointer;transition:all .2s;background:#fff;
+  font-size:15px;color:var(--gray-800);font-weight:500;text-align:left;width:100%}
+.opt:hover:not(.dis){border-color:var(--blue);background:var(--blue-lt);transform:translateX(3px)}
+.opt-lbl{width:26px;height:26px;border-radius:50%;border:2px solid var(--gray-200);
+  display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;
+  color:var(--gray-600);flex-shrink:0;transition:all .2s}
+.opt:hover:not(.dis) .opt-lbl{border-color:var(--blue);color:var(--blue);background:var(--blue-lt)}
+.opt.cor{border-color:#28a745;background:var(--green-lt)!important;transform:none!important}
+.opt.cor .opt-lbl{background:#28a745;border-color:#28a745;color:#fff}
+.opt.inc{border-color:var(--red);background:var(--red-lt)!important;transform:none!important}
+.opt.inc .opt-lbl{background:var(--red);border-color:var(--red);color:#fff}
+.opt.dis{cursor:not-allowed;pointer-events:none}
+.exp-box{background:#f8f9fa;border-top:1px solid var(--gray-200);padding:14px 20px;display:none;border-left:4px solid var(--green)}
+.exp-box.show{display:block;animation:sIn .3s ease}
+@keyframes sIn{from{opacity:0;transform:translateY(-5px)}to{opacity:1;transform:translateY(0)}}
+.exp-title{font-weight:700;color:var(--green);margin-bottom:5px;font-size:13px}
+.exp-txt{font-size:13px;color:var(--gray-600);line-height:1.7}
+.marks-row{background:linear-gradient(90deg,#fff7ed,#fff);border:1.5px solid #fed7aa;border-radius:9px;padding:8px 13px;margin:0 20px 13px;display:flex;gap:12px;font-size:12px;flex-wrap:wrap}
+.marks-row span{display:flex;align-items:center;gap:3px;font-weight:600}
+.mk-g{color:#28a745}.mk-r{color:var(--red)}.mk-gr{color:var(--gray-400)}
+.q-ctrl{padding:13px 16px;border-top:1px solid var(--gray-200);display:flex;justify-content:space-between;align-items:center;gap:7px;flex-wrap:wrap}
+.btn{padding:8px 17px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;border:none;font-family:var(--f);transition:all .2s;display:flex;align-items:center;gap:4px}
+.btn:disabled{opacity:.4;cursor:not-allowed!important;transform:none!important}
+.btn-prev{background:var(--gray-100);color:var(--gray-600);border:1.5px solid var(--gray-200)}
+.btn-prev:hover:not(:disabled){background:var(--gray-200)}
+.btn-skip{background:#fff7ed;color:var(--orange);border:1.5px solid #fed7aa}
+.btn-skip:hover:not(:disabled){background:#ffedd5}
+.btn-next{background:var(--blue);color:#fff}
+.btn-next:hover:not(:disabled){background:var(--blue-dk);transform:translateY(-1px)}
+.btn-fin{background:linear-gradient(135deg,#9b59b6,#8e44ad);color:#fff}
+.btn-fin:hover:not(:disabled){transform:translateY(-1px)}
+.btn-home{background:var(--red);color:#fff}
+.btn-home:hover{transform:translateY(-1px)}
+.btn-review{background:var(--green);color:#fff}
+.btn-review:hover{transform:translateY(-1px)}
+.btn-admin{background:linear-gradient(135deg,#1a1a2e,#0f3460);color:#fff;border:none;
+  border-radius:8px;padding:7px 13px;font-size:13px;font-weight:700;cursor:pointer;font-family:var(--f);display:none}
+.btn-logout{background:transparent;border:1.5px solid var(--gray-200);color:var(--gray-600);
+  border-radius:8px;padding:8px 18px;font-size:13px;font-weight:700;cursor:pointer;font-family:var(--f)}
+.btn-logout:hover{border-color:var(--red);color:var(--red);background:#fff5f5}
+.home-footer{text-align:center;padding:6px 20px 28px}
+/* Sidebar */
+.sc{background:#fff;border-radius:13px;box-shadow:0 2px 12px rgba(0,0,0,.06);margin-bottom:12px;overflow:hidden}
+.sc-hd{padding:10px 14px;font-weight:700;font-size:13px;color:var(--gray-800);border-bottom:1px solid var(--gray-200);display:flex;align-items:center;gap:6px}
+.q-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;padding:11px}
+.qb{aspect-ratio:1;border-radius:5px;border:2px solid var(--gray-200);font-size:10px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;color:var(--gray-600);background:#fff}
+.qb:hover{border-color:var(--blue);color:var(--blue)}
+.qb.cur{border-color:var(--blue);background:var(--blue);color:#fff}
+.qb.cor{background:var(--green-lt);border-color:#28a745;color:#155724}
+.qb.inc{background:var(--red-lt);border-color:var(--red);color:#721c24}
+.qb.skp{background:#fff3cd;border-color:#ffc107;color:#856404}
+.legend{display:flex;flex-direction:column;gap:5px;padding:0 12px 12px}
+.leg{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--gray-600)}
+.leg-dot{width:12px;height:12px;border-radius:3px;flex-shrink:0}
+.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:11px}
+.sb{background:var(--gray-50);border-radius:8px;padding:9px;text-align:center}
+.sb-num{font-family:var(--fd);font-size:18px;font-weight:700}
+.sb-lbl{font-size:10px;color:var(--gray-400);margin-top:1px}
+
+/* ── RESULT ── */
+#result-screen{display:none;max-width:760px;margin:20px auto;padding:0 16px 100px}
+#result-screen.open{display:block}
+.res-card{background:#fff;border-radius:13px;box-shadow:0 2px 12px rgba(0,0,0,.06);overflow:hidden}
+.res-hero{background:linear-gradient(135deg,#1a1a2e,#16213e);padding:30px 20px;text-align:center}
+.res-hero h2{font-family:var(--fd);font-size:21px;color:#fff;margin-bottom:6px}
+.res-score{font-family:var(--fd);font-size:50px;font-weight:800;color:var(--yellow);line-height:1}
+.res-pct{font-size:17px;color:rgba(255,255,255,.7);margin-top:3px}
+.res-msg{margin-top:12px;background:rgba(255,255,255,.1);border-radius:9px;padding:10px 16px;color:#fff;font-size:14px;border:1px solid rgba(255,255,255,.15)}
+.res-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;padding:16px}
+.rs-box{background:var(--gray-50);border-radius:11px;padding:11px;text-align:center;border:1.5px solid var(--gray-200)}
+.rs-num{font-family:var(--fd);font-size:20px;font-weight:700}
+.rs-lbl{font-size:10px;color:var(--gray-400);margin-top:2px}
+.rs-g{color:#28a745}.rs-r{color:var(--red)}.rs-o{color:var(--orange)}.rs-b{color:var(--blue)}
+.time-banner{background:linear-gradient(135deg,#1a1a2e,#0f3460);border-radius:13px;
+  margin:0 16px 16px;padding:16px 20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
+.tb-main{display:flex;align-items:center;gap:10px}
+.tb-big{font-family:var(--fd);font-size:28px;font-weight:800;color:var(--yellow);line-height:1}
+.tb-lbl{color:rgba(255,255,255,.65);font-size:11px;margin-bottom:2px}
+.tb-stats{display:flex;gap:16px;flex-wrap:wrap}
+.tbs-i .tbs-n{font-family:var(--fd);font-size:19px;font-weight:700;color:#fff}
+.tbs-i .tbs-l{font-size:10px;color:rgba(255,255,255,.6)}
+.res-chart{padding:0 16px 16px}
+.res-chart h3{font-size:13px;font-weight:700;margin-bottom:8px;color:var(--gray-800)}
+.chart-bars{display:flex;gap:3px;align-items:flex-end;height:68px}
+.c-bar{flex:1;border-radius:2px 2px 0 0;min-width:5px;transition:height .6s}
+.res-btns{padding:13px 16px;border-top:1px solid var(--gray-200);display:flex;gap:9px;flex-wrap:wrap;justify-content:center}
+
+/* ── ADMIN ── */
+#admin-screen.active{display:block;max-width:680px;margin:20px auto;padding:0 16px 100px}
+.admin-card{background:#fff;border-radius:13px;box-shadow:0 2px 12px rgba(0,0,0,.06);overflow:hidden}
+.admin-hd{background:linear-gradient(135deg,#1a1a2e,#0f3460);padding:20px 18px;display:flex;align-items:center;gap:12px}
+.admin-hd .a-ic{font-size:28px}
+.admin-hd h2{font-family:var(--fd);font-size:19px;color:#fff;font-weight:800}
+.admin-hd p{color:rgba(255,255,255,.7);font-size:12px;margin-top:2px}
+.admin-body{padding:16px}
+.a-sec{font-size:13px;font-weight:700;color:var(--gray-800);margin-bottom:11px}
+.u-table{width:100%;border-collapse:collapse}
+.u-table th{background:var(--gray-50);padding:8px 12px;font-size:12px;font-weight:700;color:var(--gray-600);text-align:left;border-bottom:2px solid var(--gray-200)}
+.u-table td{padding:10px 12px;border-bottom:1px solid var(--gray-100);vertical-align:middle}
+.u-table tr:last-child td{border-bottom:none}
+.status-tog{display:flex;align-items:center;gap:5px;background:none;border:none;cursor:pointer;font-family:var(--f);font-size:13px;font-weight:700;padding:5px 11px;border-radius:7px;transition:all .2s}
+.status-tog.paid{background:#dcfce7;color:#166534;border:1.5px solid #86efac}
+.status-tog.free{background:var(--gray-100);color:var(--gray-600);border:1.5px solid var(--gray-200)}
+.status-tog:hover{transform:scale(1.05)}
+.save-msg{background:#f0fdf4;border:1.5px solid #86efac;border-radius:7px;padding:8px 13px;font-size:13px;color:#16a34a;font-weight:600;margin-top:11px;display:none;align-items:center;gap:6px}
+.save-msg.show{display:flex}
+.admin-btns{padding:13px 16px;border-top:1px solid var(--gray-200);display:flex;gap:9px;flex-wrap:wrap;justify-content:center}
+
+@media(max-width:768px){
+  .layout{flex-direction:column;padding:12px 12px 100px}
+  .side-col{width:100%}
+  .res-stats{grid-template-columns:repeat(2,1fr)}
+  .q-grid{grid-template-columns:repeat(8,1fr)}
+  .tlogo{font-size:14px}
+  .subj-grid,.st-grid,.ch-grid{grid-template-columns:1fr}
+  .free-alert{flex-wrap:wrap}
+  .btn-upgrade{margin-left:0;width:100%}
+  .paid-strip{flex-wrap:wrap}
+}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="tlogo" onclick="safeHome()">ইতিহাস<span>পাঠশালা</span></div>
+  <div class="breadcrumb" id="bc"><span class="bc">🏠 হোম</span></div>
+  <div class="tright">
+    <button id="snd-btn" onclick="toggleSound()">🔊</button>
+    <div class="tuser" id="tuser" onclick="safeHome()">
+      <span id="tu-em">👤</span><span id="tu-nm">User</span>
+    </div>
+    <div id="timer-el">⏱ 60:00</div>
+  </div>
+</div>
+
+<!-- STICKY BACK BUTTON -->
+<button class="sticky-back" id="sticky-back" onclick="doStickyBack()">◀ পিছনে যান</button>
+
+<!-- UPGRADE MODAL -->
+<div class="modal-bg" id="upg-modal" onclick="if(event.target===this)closeModal()">
+  <div class="modal-box">
+    <div class="modal-hero">
+      <div class="mh-ic">⭐</div>
+      <h3>পেইড কনটেন্ট</h3>
+      <p>এই বিষয়টি পেইড সদস্যদের জন্য উন্মুক্ত</p>
+    </div>
+    <div class="modal-body">
+      <div class="modal-feats">
+        <div class="modal-feat"><span class="feat-ic">📚</span>সমস্ত অধ্যায় ও সাবটপিক অ্যাক্সেস</div>
+        <div class="modal-feat"><span class="feat-ic">📝</span>১০০০+ মক টেস্ট প্রশ্ন</div>
+        <div class="modal-feat"><span class="feat-ic">💡</span>বিস্তারিত ব্যাখ্যা সহ উত্তর</div>
+        <div class="modal-feat"><span class="feat-ic">📊</span>পারফরম্যান্স বিশ্লেষণ</div>
+        <div class="modal-feat"><span class="feat-ic">📱</span>যেকোনো ২টি ডিভাইস থেকে অ্যাক্সেস</div>
+      </div>
+      <div class="modal-contact">📞 পেইড অ্যাক্সেসের জন্য অ্যাডমিনের সাথে যোগাযোগ করুন</div>
+      <button class="modal-close-btn" onclick="closeModal()">✕ বন্ধ করুন</button>
+    </div>
+  </div>
+</div>
+
+<!-- LOGIN SCREEN -->
+<div id="login-screen" class="screen active">
+  <div class="pw-card">
+    <div class="pw-hero">
+      <div class="ico">🔐</div>
+      <h2>ইতিহাস পাঠশালায় আসুন</h2>
+      <p>আপনার পাসওয়ার্ড দিয়ে প্রবেশ করুন</p>
+    </div>
+    <div class="pw-body">
+      <div class="pw-badge" id="pw-badge">
+        <div class="pw-av" id="pw-av">?</div>
+        <div><div class="pw-uname" id="pw-un">...</div><div class="pw-urole" id="pw-ur">✅ পরিচয় নিশ্চিত</div></div>
+      </div>
+      <div class="pw-msg err" id="pw-err"><span id="pw-et">ভুল পাসওয়ার্ড।</span></div>
+      <div class="pw-msg suc" id="pw-suc"><span id="pw-st">লগইন সফল!</span></div>
+      <div class="pw-msg dev" id="pw-dev"><span id="pw-dt">ডিভাইস সীমা পূর্ণ।</span></div>
+      <label class="pw-lbl">🔑 পাসওয়ার্ড লিখুন</label>
+      <div class="pw-wrap">
+        <input type="password" class="pw-inp" id="pw-inp" placeholder="পাসওয়ার্ড লিখুন..."
+          onkeydown="if(event.key==='Enter')doPW()" autocomplete="off"/>
+        <button class="pw-eye" onclick="toggleEye()" id="pw-eye">👁️</button>
+      </div>
+      <div class="pw-att" id="pw-att"></div>
+      <button class="pw-submit" id="pw-btn" onclick="doPW()">🚀 প্রবেশ করুন</button>
+    </div>
+    <div class="pw-foot">ইতিহাস পাঠশালা · পরীক্ষা পোর্টাল · © 2025</div>
+  </div>
+</div>
+
+<!-- HOME SCREEN (dynamic hero based on user type) -->
+<div id="home-screen" class="screen">
+  <div id="home-hero-area"></div>
+  <div class="page-wrap">
+    <div class="sec-hd">
+      <div><h2 id="home-sec-title">📚 প্রধান বিষয়সমূহ</h2><p id="home-sec-sub">একটি বিষয় বেছে নিন</p></div>
+      <button class="btn-admin" id="adm-btn" onclick="openAdmin()">⚙️ অ্যাডমিন</button>
+    </div>
+    <div class="subj-grid" id="subj-grid"></div>
+  </div>
+  <div class="home-footer">
+    <button class="btn-logout" onclick="doLogout()">🚪 লগআউট করুন</button>
+  </div>
+</div>
+
+<!-- SUBTOPIC SCREEN -->
+<div id="sub-screen" class="screen">
+  <div class="hero-bar" id="sub-hbar" style="background:linear-gradient(135deg,#0057D9,#003FA0)"></div>
+  <div class="page-wrap">
+    <div class="sec-hd"><div><h2 id="sub-title">উপবিষয়</h2><p id="sub-sub"></p></div></div>
+    <div class="st-grid" id="st-grid"></div>
+  </div>
+</div>
+
+<!-- CHAPTER SCREEN -->
+<div id="ch-screen" class="screen">
+  <div class="hero-bar" id="ch-hbar" style="background:linear-gradient(135deg,#0f3460,#1a1a2e)"></div>
+  <div class="page-wrap">
+    <div class="sec-hd"><div><h2 id="ch-title">অধ্যায়সমূহ</h2><p id="ch-sub"></p></div></div>
+    <div class="ch-grid" id="ch-grid"></div>
+  </div>
+</div>
+
+<!-- MOCK TEST LIST SCREEN -->
+<div id="mocktest-screen" class="screen">
+  <div class="mt-hero" id="mt-hero"></div>
+  <div class="page-wrap">
+    <div class="sec-hd"><div><h2 id="mt-title">মক টেস্ট তালিকা</h2><p id="mt-sub">একটি বেছে নিন</p></div></div>
+    <div class="mt-list" id="mt-list"></div>
+  </div>
+</div>
+
+<!-- START SCREEN -->
+<div id="start-screen" class="screen">
+  <div class="start-card">
+    <div class="start-hero">
+      <div class="s-ico" id="s-ico">📝</div>
+      <h1 id="s-title">মক টেস্ট</h1>
+      <p id="s-sub">ইতিহাস পাঠশালা</p>
+    </div>
+    <div class="start-meta">
+      <div class="meta-box"><div class="mi">📝</div><div class="mv" id="s-qc">150</div><div class="ml">মোট প্রশ্ন</div></div>
+      <div class="meta-box"><div class="mi">⏱</div><div class="mv">60 মিনিট</div><div class="ml">সময়সীমা</div></div>
+      <div class="meta-box"><div class="mi">✅</div><div class="mv">+1</div><div class="ml">সঠিক উত্তর</div></div>
+      <div class="meta-box"><div class="mi">❌</div><div class="mv">-0.25</div><div class="ml">ভুল উত্তর</div></div>
+    </div>
+    <div class="start-rules">
+      <h3>📌 নিয়মাবলী</h3>
+      <ul>
+        <li>প্রতিটি সঠিক উত্তরে <strong>+1</strong> নম্বর পাবেন।</li>
+        <li>প্রতিটি ভুল উত্তরে <strong>-0.25</strong> নম্বর কাটা যাবে।</li>
+        <li>উত্তর না দিলে কোনো নম্বর কাটা যাবে না।</li>
+        <li>⌨️ Arrow keys: নেভিগেট, Space: Skip, 1-4: উত্তর।</li>
+      </ul>
+    </div>
+    <div class="start-btns">
+      <button class="btn-back-st" onclick="goBackFromStart()">◀ পিছনে</button>
+      <button class="btn-go" onclick="startQuiz()">🚀 পরীক্ষা শুরু করুন</button>
+    </div>
+  </div>
+</div>
+
+<!-- QUIZ SCREEN -->
+<div id="quiz-screen" class="screen">
+  <div class="layout">
+    <div class="main-col">
+      <div class="card">
+        <div class="q-hd">
+          <span class="q-tag" id="q-tag">প্রশ্ন ১</span>
+          <span class="q-prog" id="q-prog">১ / ১৫০</span>
+        </div>
+        <div class="prog-bar"><div class="prog-fill" id="prog-fill"></div></div>
+        <div class="q-body">
+          <span class="q-num" id="q-num">Q.1</span>
+          <div class="q-txt" id="q-txt"></div>
+          <div class="opts" id="opts"></div>
+        </div>
+        <div class="marks-row">
+          <span class="mk-g">✅ +1</span>
+          <span class="mk-r">❌ -0.25</span>
+          <span class="mk-gr">⏭ Skip: 0</span>
+        </div>
+        <div class="exp-box" id="exp-box">
+          <div class="exp-title">💡 ব্যাখ্যা</div>
+          <div class="exp-txt" id="exp-txt"></div>
+        </div>
+        <div class="q-ctrl">
+          <button class="btn btn-prev" id="btn-prev" onclick="prevQ()" disabled>◀ পূর্ববর্তী</button>
+          <div style="display:flex;gap:6px">
+            <button class="btn btn-skip" onclick="skipQ()">⏭ Skip</button>
+            <button class="btn btn-fin" id="btn-fin" style="display:none" onclick="submitQuiz()">🏁 জমা দিন</button>
+            <button class="btn btn-next" id="btn-next" onclick="nextQ()" disabled>পরবর্তী ▶</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="side-col">
+      <div class="sc">
+        <div class="sc-hd">📊 লাইভ স্কোর</div>
+        <div class="stats-grid">
+          <div class="sb"><div class="sb-num" style="color:#28a745" id="s-cor">0</div><div class="sb-lbl">সঠিক</div></div>
+          <div class="sb"><div class="sb-num" style="color:var(--red)" id="s-inc">0</div><div class="sb-lbl">ভুল</div></div>
+          <div class="sb"><div class="sb-num" style="color:var(--orange)" id="s-skp">0</div><div class="sb-lbl">Skip</div></div>
+          <div class="sb"><div class="sb-num" style="color:var(--blue)" id="s-scr">0</div><div class="sb-lbl">স্কোর</div></div>
+        </div>
+      </div>
+      <div class="sc">
+        <div class="sc-hd">🗂️ প্রশ্ন প্যানেল</div>
+        <div class="q-grid" id="q-grid"></div>
+        <div class="legend">
+          <div class="leg"><div class="leg-dot" style="background:var(--green-lt);border:2px solid #28a745"></div>সঠিক</div>
+          <div class="leg"><div class="leg-dot" style="background:var(--red-lt);border:2px solid var(--red)"></div>ভুল</div>
+          <div class="leg"><div class="leg-dot" style="background:#fff3cd;border:2px solid #ffc107"></div>Skip</div>
+          <div class="leg"><div class="leg-dot" style="background:var(--blue);border:2px solid var(--blue)"></div>বর্তমান</div>
+        </div>
+      </div>
+      <button class="btn btn-home" onclick="safeHome()" style="width:100%;justify-content:center">🏠 হোমে ফিরুন</button>
+    </div>
+  </div>
+</div>
+
+<!-- RESULT SCREEN -->
+<div id="result-screen">
+  <div class="res-card">
+    <div class="res-hero">
+      <div style="font-size:30px;margin-bottom:8px">🎉</div>
+      <h2>পরীক্ষা সম্পন্ন!</h2>
+      <div id="r-uline" style="color:rgba(255,255,255,.7);font-size:12px;margin-bottom:6px"></div>
+      <div class="res-score" id="r-score">0</div>
+      <div class="res-pct" id="r-pct">0%</div>
+      <div class="res-msg" id="r-msg"></div>
+    </div>
+    <div class="res-stats">
+      <div class="rs-box"><div class="rs-num rs-g" id="r-cor">0</div><div class="rs-lbl">✅ সঠিক</div></div>
+      <div class="rs-box"><div class="rs-num rs-r" id="r-inc">0</div><div class="rs-lbl">❌ ভুল</div></div>
+      <div class="rs-box"><div class="rs-num rs-o" id="r-skp">0</div><div class="rs-lbl">⏭ Skip</div></div>
+      <div class="rs-box"><div class="rs-num rs-b" id="r-net">0</div><div class="rs-lbl">📊 নেট</div></div>
+    </div>
+    <div class="time-banner">
+      <div class="tb-main">
+        <div style="font-size:24px">⏱️</div>
+        <div><div class="tb-lbl">মোট সময়</div><div class="tb-big" id="r-tbig">00:00</div></div>
+      </div>
+      <div class="tb-stats">
+        <div class="tbs-i"><div class="tbs-n" id="r-tmins">0</div><div class="tbs-l">মিনিট</div></div>
+        <div class="tbs-i"><div class="tbs-n" id="r-tsecs">0</div><div class="tbs-l">সেকেন্ড</div></div>
+        <div class="tbs-i"><div class="tbs-n" id="r-perq" style="color:#4ade80">0s</div><div class="tbs-l">গড়/প্রশ্ন</div></div>
+      </div>
+    </div>
+    <div class="res-chart"><h3>পারফরম্যান্স চার্ট</h3><div class="chart-bars" id="chart-bars"></div></div>
+    <div class="res-btns">
+      <button class="btn btn-review" onclick="reviewAns()">📖 পর্যালোচনা</button>
+      <button class="btn btn-home" onclick="safeHome()">🏠 হোমে ফিরুন</button>
+    </div>
+  </div>
+</div>
+
+<!-- ADMIN SCREEN -->
+<div id="admin-screen" class="screen">
+  <div class="admin-card">
+    <div class="admin-hd">
+      <div class="a-ic">⚙️</div>
+      <div><h2>অ্যাডমিন প্যানেল</h2><p>ব্যবহারকারীর স্ট্যাটাস পরিবর্তন করুন</p></div>
+    </div>
+    <div class="admin-body">
+      <div class="a-sec">👥 ব্যবহারকারী ব্যবস্থাপনা</div>
+      <div id="u-mgmt"></div>
+      <div class="save-msg" id="save-msg">✅ পরিবর্তন সংরক্ষিত!</div>
+    </div>
+    <div class="admin-btns">
+      <button class="btn" style="background:var(--green);color:#fff" onclick="saveAdmin()">💾 সংরক্ষণ</button>
+      <button class="btn" style="background:#fff7ed;color:var(--orange);border:1.5px solid #fed7aa" onclick="clearSessions()">📱 সেশন সাফ</button>
+      <button class="btn btn-prev" onclick="closeAdmin()">◀ ফিরে যান</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ══ DATA ══
+const TREE = [
+  {
+    id:'s1', title:'ভারতের ইতিহাস', icon:'🇮🇳',
+    color:'linear-gradient(135deg,#dbeafe,#bfdbfe)',
+    desc:'প্রাচীন থেকে আধুনিক ভারতের সম্পূর্ণ ইতিহাস',
+    subs:[
+      { id:'st1a', title:'প্রাচীন ইতিহাস', icon:'🏛️',
+        color:'linear-gradient(135deg,#0057D9,#003FA0)',
+        chapters:[
+          { id:'ch1',  title:'সিন্ধু সভ্যতা',      desc:'হরপ্পা, মহেঞ্জোদারো ও নগর পরিকল্পনা',       icon:'🏺', q:80,  free:true  },
+          { id:'ch2',  title:'বৈদিক সভ্যতা',        desc:'বেদ, আর্য, বর্ণব্যবস্থা ও রাষ্ট্রব্যবস্থা',  icon:'📜', q:150, free:true  },
+          { id:'ch3',  title:'মহাজনপদ যুগ',          desc:'ষোলটি মহাজনপদ ও বৌদ্ধ-জৈন ধর্মের উত্থান',   icon:'⚔️', q:60,  free:false },
+          { id:'ch4',  title:'মৌর্য সাম্রাজ্য',      desc:'চন্দ্রগুপ্ত মৌর্য, অশোক ও কৌটিল্যের যুগ',  icon:'👑', q:90,  free:false },
+          { id:'ch5',  title:'গুপ্ত সাম্রাজ্য',      desc:'স্বর্ণযুগ, কালিদাস ও বৈজ্ঞানিক অগ্রগতি',    icon:'✨', q:70,  free:false },
+        ]
+      },
+      { id:'st1b', title:'মধ্যযুগীয় ইতিহাস', icon:'🕌',
+        color:'linear-gradient(135deg,#0f3460,#16213e)',
+        chapters:[
+          { id:'ch6',  title:'দিল্লি সালতানাত',      desc:'তুর্কি ও আফগান শাসন — পাঁচটি বংশ',         icon:'🗡️', q:85,  free:false },
+          { id:'ch7',  title:'মুঘল সাম্রাজ্য',        desc:'বাবর থেকে আওরঙ্গজেব — মুঘল শাসনের ইতিহাস', icon:'🏰', q:100, free:false },
+          { id:'ch8',  title:'বিজয়নগর রাজ্য',        desc:'দক্ষিণ ভারতের হিন্দু সাম্রাজ্যের ইতিহাস',   icon:'🌺', q:50,  free:false },
+          { id:'ch9',  title:'মারাঠা সাম্রাজ্য',      desc:'শিবাজি মহারাজ ও পেশোয়াদের ইতিহাস',         icon:'🐯', q:65,  free:false },
+        ]
+      },
+      { id:'st1c', title:'আধুনিক ইতিহাস', icon:'🏗️',
+        color:'linear-gradient(135deg,#7c3aed,#6d28d9)',
+        chapters:[
+          { id:'ch10', title:'ইউরোপীয় আগমন',         desc:'পর্তুগিজ, ব্রিটিশ ও ফরাসি বণিকদের আগমন',   icon:'⛵', q:55,  free:false },
+          { id:'ch11', title:'ব্রিটিশ শাসন',           desc:'কোম্পানি থেকে ব্রিটিশ ক্রাউন শাসন',        icon:'🇬🇧', q:95,  free:false },
+          { id:'ch12', title:'স্বাধীনতা আন্দোলন',      desc:'গান্ধী, নেতাজি ও মুক্তিযুদ্ধের ইতিহাস',    icon:'🕊️', q:110, free:false },
+          { id:'ch13', title:'স্বাধীনোত্তর ভারত',      desc:'১৯৪৭ থেকে বর্তমান — আধুনিক ভারতের গঠন',   icon:'🌅', q:70,  free:false },
+        ]
+      },
+    ]
+  },
+  {
+    id:'s2', title:'বিশ্বের ইতিহাস', icon:'🌍',
+    color:'linear-gradient(135deg,#dcfce7,#bbf7d0)',
+    desc:'ইউরোপ, এশিয়া, আমেরিকা ও বিশ্ব রাজনীতির ইতিহাস',
+    subs:[
+      { id:'st2a', title:'ইউরোপের ইতিহাস', icon:'🏰',
+        color:'linear-gradient(135deg,#0057D9,#7c3aed)',
+        chapters:[
+          { id:'ch14', title:'গ্রিস ও রোমান সভ্যতা',  desc:'গণতন্ত্রের উৎপত্তি ও রোমান সাম্রাজ্যের পতন', icon:'🏛️', q:60,  free:true  },
+          { id:'ch15', title:'রেনেসাঁ ও সংস্কার',      desc:'ইউরোপের পুনর্জাগরণ ও ধর্মসংস্কার আন্দোলন',  icon:'🎨', q:50,  free:false },
+          { id:'ch16', title:'ফরাসি বিপ্লব',           desc:'স্বাধীনতা, সাম্য ও ভ্রাতৃত্বের আন্দোলন',    icon:'⚡', q:65,  free:false },
+          { id:'ch17', title:'প্রথম ও দ্বিতীয় বিশ্বযুদ্ধ', desc:'কারণ, প্রধান ঘটনা ও ফলাফল',           icon:'🔫', q:80,  free:false },
+        ]
+      },
+      { id:'st2b', title:'চীনের ইতিহাস', icon:'🐉',
+        color:'linear-gradient(135deg,#b91c1c,#7f1d1d)',
+        chapters:[
+          { id:'ch18', title:'প্রাচীন চীনা সভ্যতা',   desc:'হান রাজবংশ, কনফুসিয়াস ও মহাপ্রাচীর',       icon:'🏯', q:55,  free:false },
+          { id:'ch19', title:'মিং ও কিং রাজবংশ',      desc:'মধ্যযুগীয় চীনের রাজনীতি ও সংস্কৃতি',       icon:'👘', q:45,  free:false },
+          { id:'ch20', title:'আধুনিক চীন',             desc:'মাও সে তুং ও গণপ্রজাতন্ত্র প্রতিষ্ঠা',      icon:'⭐', q:60,  free:false },
+        ]
+      },
+      { id:'st2c', title:'আমেরিকার ইতিহাস', icon:'🗽',
+        color:'linear-gradient(135deg,#1d4ed8,#1e3a8a)',
+        chapters:[
+          { id:'ch21', title:'আমেরিকার স্বাধীনতা',     desc:'১৭৭৬ সালের স্বাধীনতা যুদ্ধ ও সংবিধান',     icon:'🦅', q:55,  free:false },
+          { id:'ch22', title:'গৃহযুদ্ধ ও পুনর্গঠন',    desc:'ক্রীতদাস প্রথা বিলোপ ও আব্রাহাম লিংকন',    icon:'🎭', q:50,  free:false },
+          { id:'ch23', title:'শীতল যুদ্ধ',             desc:'আমেরিকা-সোভিয়েত দ্বন্দ্ব ও বিশ্বরাজনীতি',  icon:'🚀', q:60,  free:false },
+        ]
+      },
+    ]
+  },
+  {
+    id:'s3', title:'পূর্ণ মক টেস্ট', icon:'📋',
+    color:'linear-gradient(135deg,#fef9c3,#fde68a)',
+    desc:'সমস্ত বিষয় থেকে প্রশ্ন — বাস্তব পরীক্ষার অনুরূপ',
+    subs:[
+      { id:'st3a', title:'সম্মিলিত মক টেস্ট', icon:'🎯',
+        color:'linear-gradient(135deg,#0f3460,#533483)',
+        chapters:[
+          { id:'ch24', title:'ইতিহাস মক টেস্ট - ১',   desc:'সকল অধ্যায় থেকে ১৫০ প্রশ্ন',              icon:'📝', q:150, free:true  },
+          { id:'ch25', title:'ইতিহাস মক টেস্ট - ২',   desc:'পূর্ববর্তী বছরের প্রশ্ন সংকলন',            icon:'📚', q:100, free:false },
+          { id:'ch26', title:'দ্রুত পুনরাবৃত্তি টেস্ট', desc:'৩০ প্রশ্ন, ৩০ মিনিট',                    icon:'⚡', q:30,  free:false },
+          { id:'ch27', title:'চূড়ান্ত মক টেস্ট',      desc:'সর্বোচ্চ কঠিন স্তর — ২০০ প্রশ্ন',          icon:'🏆', q:200, free:false },
+        ]
+      },
+    ]
+  },
+  {
+    id:'s4', title:'আরও বিষয় শীঘ্রই', icon:'🚀',
+    color:'linear-gradient(135deg,#f1f5f9,#e2e8f0)',
+    desc:'ভূগোল, বিজ্ঞান, সাধারণ জ্ঞান — শীঘ্রই আসছে',
+    subs:[]
+  },
+];
+
+// Add mock tests to chapters
+// ch1=সিন্ধু, ch2=বৈদিক (has real quiz), others are external
+const MOCK_TESTS = {
+  'ch1': [
+    { id:'m1', title:'সিন্ধু সভ্যতা — মক টেস্ট ১', desc:'হরপ্পা ও মহেঞ্জোদারো — বেসিক প্রশ্ন', q:40, time:40, free:true,  type:'internal' },
+    { id:'m2', title:'সিন্ধু সভ্যতা — মক টেস্ট ২', desc:'নগর পরিকল্পনা ও সংস্কৃতি',             q:50, time:50, free:false, type:'internal' },
+    { id:'m3', title:'সিন্ধু সভ্যতা — মক টেস্ট ৩', desc:'পূর্ববর্তী বছরের প্রশ্ন সংকলন',       q:60, time:60, free:false, type:'internal' },
+  ],
+  'ch2': [
+    { id:'m4', title:'বৈদিক সভ্যতা — মক টেস্ট ১',  desc:'ঋগ্বৈদিক যুগ — ১৫০টি প্রশ্ন',         q:150, time:60, free:true,  type:'quiz' },
+    { id:'m5', title:'বৈদিক সভ্যতা — মক টেস্ট ২',  desc:'পরবর্তী বৈদিক যুগ',                    q:80,  time:60, free:false, type:'external', url:'https://example.com/vedic-test-2' },
+    { id:'m6', title:'বৈদিক সভ্যতা — মক টেস্ট ৩',  desc:'বেদাঙ্গ ও দর্শন',                      q:60,  time:45, free:false, type:'external', url:'https://example.com/vedic-test-3' },
+  ],
+  'ch3': [
+    { id:'m7', title:'মহাজনপদ — মক টেস্ট ১',        desc:'ষোলটি মহাজনপদ ও তাদের রাজধানী',        q:40, time:40, free:false, type:'external', url:'https://example.com/mahajanapada-1' },
+    { id:'m8', title:'মহাজনপদ — মক টেস্ট ২',        desc:'বৌদ্ধ ও জৈন ধর্মের উত্থান',           q:50, time:50, free:false, type:'internal' },
+  ],
+  'ch4': [
+    { id:'m9',  title:'মৌর্য — মক টেস্ট ১',         desc:'চন্দ্রগুপ্ত ও কৌটিল্য',                q:50, time:50, free:false, type:'internal' },
+    { id:'m10', title:'মৌর্য — মক টেস্ট ২',         desc:'অশোকের শাসন ও ধর্মনীতি',              q:60, time:60, free:false, type:'external', url:'https://example.com/maurya-2' },
+  ],
+  'ch14': [
+    { id:'m11', title:'গ্রিস ও রোম — মক টেস্ট ১',   desc:'গণতন্ত্রের উৎপত্তি ও গ্রিক সভ্যতা',   q:40, time:40, free:true,  type:'internal' },
+    { id:'m12', title:'গ্রিস ও রোম — মক টেস্ট ২',   desc:'রোমান সাম্রাজ্যের উত্থান ও পতন',      q:50, time:50, free:false, type:'internal' },
+  ],
+  'ch24': [
+    { id:'m13', title:'ইতিহাস মক টেস্ট ১',          desc:'সকল অধ্যায় থেকে ১৫০ প্রশ্ন',          q:150, time:60, free:true,  type:'quiz' },
+    { id:'m14', title:'ইতিহাস মক টেস্ট ২',          desc:'পূর্ববর্তী বছরের প্রশ্ন সংকলন',        q:100, time:60, free:false, type:'external', url:'https://example.com/fullmock-2' },
+    { id:'m15', title:'দ্রুত পুনরাবৃত্তি টেস্ট',   desc:'৩০ প্রশ্ন, ৩০ মিনিট',                  q:30,  time:30, free:false, type:'external', url:'https://example.com/quick-test' },
+    { id:'m16', title:'চূড়ান্ত মক টেস্ট',          desc:'সর্বোচ্চ কঠিন স্তর — ২০০ প্রশ্ন',       q:200, time:90, free:false, type:'internal' },
+  ],
+};
+// Default for chapters without mock tests
+function getMockTests(chid){ return MOCK_TESTS[chid] || [
+  { id:'d1', title:chid+' — মক টেস্ট ১', desc:'এই অধ্যায়ের মূল প্রশ্নসমূহ', q:50, time:50, free:false, type:'internal' },
+  { id:'d2', title:chid+' — মক টেস্ট ২', desc:'পূর্ববর্তী বছরের প্রশ্ন',      q:40, time:40, free:false, type:'internal' },
+]; }
+
+const USERS = [
+  { id:'u1', name:'সুব্রত দাস',    pw:'subrata2025', emoji:'👨‍🏫', role:'শিক্ষক',     admin:true  },
+  { id:'u2', name:'রাহুল মণ্ডল',   pw:'rahul@hist',  emoji:'🧑‍🎓', role:'শিক্ষার্থী', admin:false },
+  { id:'u3', name:'প্রিয়া শীল',    pw:'priya#123',   emoji:'👩‍🎓', role:'শিক্ষার্থী', admin:false },
+  { id:'u4', name:'অমিত কুমার',    pw:'amit2025!',   emoji:'🧑‍💻', role:'শিক্ষার্থী', admin:false },
+  { id:'u5', name:'সুমনা বিশ্বাস', pw:'sumona@bn',   emoji:'👩‍🏫', role:'শিক্ষার্থী', admin:false },
+  { id:'u6', name:'দেবাশিস পাল',   pw:'debu#hist',   emoji:'🎓',   role:'শিক্ষার্থী', admin:false },
+  { id:'u7', name:'অ্যাডমিন',      pw:'admin@1234',  emoji:'⚙️',   role:'অ্যাডমিন',  admin:true  },
+];
+
+// ══ STORAGE & SESSIONS ══
+const SK='itihaas_u_v5',SS='itihaas_s_v5',MAX_DEV=5,STO=24*60*60*1000;
+function getStore(){ try{ const s=JSON.parse(localStorage.getItem(SK)||'null'); if(!s) return resetStore(); USERS.forEach(u=>{if(!s.find(x=>x.id===u.id))s.push({id:u.id,paid:u.admin});}); return s; }catch(e){return resetStore();} }
+function resetStore(){ const d=USERS.map(u=>({id:u.id,paid:u.admin})); localStorage.setItem(SK,JSON.stringify(d)); return d; }
+function setStore(d){ localStorage.setItem(SK,JSON.stringify(d)); }
+function isPaid(uid){ return true; } // All registered users are paid
+const DEVID=(()=>{ let id=localStorage.getItem('devid_v2'); if(!id){id='d'+Math.random().toString(36).substr(2,8)+Date.now(); localStorage.setItem('devid_v2',id);} return id; })();
+function getSess(uid){ try{ const now=Date.now(); return (JSON.parse(localStorage.getItem(SS)||'[]')).filter(s=>s.uid===uid&&(now-s.seen)<STO); }catch(e){return [];} }
+function regSess(uid){ try{ let a=JSON.parse(localStorage.getItem(SS)||'[]'); const now=Date.now(); a=a.filter(s=>(now-s.seen)<STO); const i=a.findIndex(s=>s.uid===uid&&s.dev===DEVID); if(i>=0)a[i].seen=now; else a.push({uid,dev:DEVID,seen:now}); localStorage.setItem(SS,JSON.stringify(a)); }catch(e){} }
+function remSess(uid){ try{ let a=JSON.parse(localStorage.getItem(SS)||'[]'); a=a.filter(s=>!(s.uid===uid&&s.dev===DEVID)); localStorage.setItem(SS,JSON.stringify(a)); }catch(e){} }
+function devCount(uid){ return new Set(getSess(uid).map(s=>s.dev)).size; }
+function thisDevIn(uid){ return getSess(uid).some(s=>s.dev===DEVID); }
+let hb=null;
+function startHB(uid){ stopHB(); hb=setInterval(()=>regSess(uid),60000); }
+function stopHB(){ if(hb){clearInterval(hb);hb=null;} }
+
+// ══ STATE ══
+let CU=null, pwFail=0, pwLocked=false, lockT=null;
+let curSid=null, curStid=null, curChid=null, curMtid=null;
+const ALL_SCR=['login-screen','home-screen','sub-screen','ch-screen','mocktest-screen','start-screen','quiz-screen','admin-screen'];
+
+// ══ SCREEN HELPER ══
+function showOnly(id){
+  ALL_SCR.forEach(s=>{
+    const el=document.getElementById(s);
+    if(s==='login-screen'&&CU){ el.classList.remove('active'); el.style.display='none'; return; }
+    el.classList.toggle('active', s===id);
+    if(s!=='login-screen') el.style.display='';
+  });
+  document.getElementById('result-screen').classList.remove('open');
+  document.getElementById('result-screen').style.display='none';
+  document.getElementById('timer-el').style.display='none';
+  // Sticky back: hide on home/login/start/quiz/result
+  const noBack=['home-screen','login-screen','start-screen','quiz-screen'];
+  document.getElementById('sticky-back').classList.toggle('show', !noBack.includes(id) && id!=='__none__');
+}
+
+function setBc(items){
+  document.getElementById('bc').innerHTML=items.map((it,i)=>
+    '<span class="bc"'+(it.fn?' onclick="'+it.fn+'"':'')+'>'+it.label+'</span>'+(i<items.length-1?'<span class="bc-sep">›</span>':'')
+  ).join('');
+}
+
+// Sticky back history
+let backStack=[];
+function doStickyBack(){
+  if(backStack.length>1){ backStack.pop(); const fn=backStack[backStack.length-1]; if(fn) fn(); }
+}
+
+// ══ LOGIN ══
+function doPW(){
+  if(pwLocked) return;
+  const val=document.getElementById('pw-inp').value.trim();
+  clearPWmsgs();
+  if(!val){ showPWmsg('err','পাসওয়ার্ড খালি রাখা যাবে না।'); return; }
+  const user=USERS.find(u=>u.pw===val);
+  if(user){
+    CU=user; pwFail=0;
+    regSess(user.id); startHB(user.id);
+    document.getElementById('pw-av').textContent=user.emoji;
+    document.getElementById('pw-un').textContent=user.name;
+    document.getElementById('pw-ur').textContent='✅ '+user.role+' — পরিচয় নিশ্চিত';
+    document.getElementById('pw-badge').classList.add('show');
+    showPWmsg('suc',user.name+', আপনাকে স্বাগতম! 🎉');
+    document.getElementById('pw-inp').disabled=true;
+    const btn=document.getElementById('pw-btn');
+    btn.disabled=true; btn.textContent='✅ লগইন সফল...';
+    setTimeout(()=>{ showOnly('__none__'); showHome(); }, 1100);
+  } else {
+    pwFail++;
+    const rem=5-pwFail;
+    if(rem<=0){
+      pwLocked=true; let s=30;
+      showPWmsg('err','বেশি ভুল! '+s+' সেকেন্ড অপেক্ষা করুন।');
+      document.getElementById('pw-inp').disabled=true;
+      document.getElementById('pw-btn').disabled=true;
+      lockT=setInterval(()=>{ s--;
+        document.getElementById('pw-et').textContent='বেশি ভুল! '+s+' সেকেন্ড অপেক্ষা করুন।';
+        if(s<=0){ clearInterval(lockT); pwLocked=false; pwFail=0;
+          document.getElementById('pw-inp').disabled=false;
+          document.getElementById('pw-inp').value='';
+          document.getElementById('pw-btn').disabled=false;
+          document.getElementById('pw-btn').textContent='🚀 প্রবেশ করুন';
+          clearPWmsgs(); document.getElementById('pw-att').textContent=''; }
+      },1000);
+    } else {
+      showPWmsg('err','ভুল পাসওয়ার্ড! আরও '+rem+' বার চেষ্টা করতে পারবেন।');
+      document.getElementById('pw-att').textContent='⚠️ '+pwFail+'/5 ভুল চেষ্টা';
+      document.getElementById('pw-inp').value='';
+      document.getElementById('pw-inp').focus();
+    }
+  }
+}
+function clearPWmsgs(){ ['pw-err','pw-suc','pw-dev'].forEach(id=>document.getElementById(id).classList.remove('show')); }
+function showPWmsg(t,msg){ const m={err:'pw-err',suc:'pw-suc',dev:'pw-dev'},tx={err:'pw-et',suc:'pw-st',dev:'pw-dt'}; document.getElementById(tx[t]).textContent=msg; document.getElementById(m[t]).classList.add('show'); }
+function toggleEye(){ const i=document.getElementById('pw-inp'),b=document.getElementById('pw-eye'); if(i.type==='password'){i.type='text';b.textContent='🙈';}else{i.type='password';b.textContent='👁️';} }
+
+// ══ HOME — DIFFERENT FOR FREE vs PAID ══
+function showHome(){
+  backStack=[showHome];
+  showOnly('home-screen');
+  const paid=isPaid(CU.id);
+  document.getElementById('tuser').style.display='flex';
+  document.getElementById('tu-em').textContent=CU.emoji;
+  document.getElementById('tu-nm').textContent=CU.name;
+  document.getElementById('adm-btn').style.display=CU.admin?'block':'none';
+  setBc([{label:'🏠 হোম'}]);
+  if(paid||CU.admin){ renderPaidHome(); } else { renderFreeHome(); }
+  window.scrollTo(0,0);
+}
+
+function renderFreeHome(){
+  // FREE HERO
+  document.getElementById('home-hero-area').innerHTML=
+    '<div class="free-home-hero">'+
+    '<h1>ইতিহাস <em>পাঠশালা</em></h1>'+
+    '<p>বিনামূল্যে শুরু করুন — প্রিমিয়াম কনটেন্টের জন্য আপগ্রেড করুন</p>'+
+    '<div class="user-chip"><span>'+CU.emoji+'</span><span>'+CU.name+'</span>'+
+    '<span class="free-badge">FREE</span></div>'+
+    '<div class="free-home-stats">'+
+    '<div class="hs-i"><div class="num" style="color:#fff">'+
+    TREE.reduce((a,s)=>a+s.subs.reduce((b,st)=>b+st.chapters.filter(c=>c.free).length,0),0)+
+    'টি</div><div class="lbl">বিনামূল্যে অধ্যায়</div></div>'+
+    '<div class="hs-i"><div class="num" style="color:#fff">'+
+    TREE.reduce((a,s)=>a+s.subs.reduce((b,st)=>b+st.chapters.filter(c=>!c.free).length,0),0)+
+    'টি</div><div class="lbl">পেইড অধ্যায়</div></div>'+
+    '<div class="hs-i"><div class="num" style="color:var(--yellow)">⭐</div><div class="lbl">আপগ্রেড করুন</div></div>'+
+    '</div></div>';
+  // Sec title
+  document.getElementById('home-sec-title').textContent='📚 উপলব্ধ বিষয়সমূহ';
+  document.getElementById('home-sec-sub').textContent='🔓 বিনামূল্যে অধ্যায়গুলো খোলা • 🔒 পেইড অধ্যায় লক করা';
+  // Render subjects with FREE alert banner
+  const g=document.getElementById('subj-grid');
+  // Free alert
+  const alertHTML='<div class="free-alert" style="grid-column:1/-1">'+
+    '<div class="free-alert-ic">🔔</div>'+
+    '<div class="free-alert-text"><h4>আপনি ফ্রি প্ল্যানে আছেন</h4>'+
+    '<p>শুধুমাত্র বিনামূল্যের অধ্যায়গুলো অ্যাক্সেস করতে পারবেন। সমস্ত কনটেন্টের জন্য পেইড প্ল্যানে যোগ দিন।</p></div>'+
+    '<button class="btn-upgrade" onclick="showUpgrade()">⭐ আপগ্রেড</button></div>';
+  g.innerHTML=alertHTML + renderSubjectCards(false);
+}
+
+function renderPaidHome(){
+  // PAID HERO — Dark premium look
+  document.getElementById('home-hero-area').innerHTML=
+    '<div class="paid-home-hero">'+
+    '<h1>⭐ প্রিমিয়াম <em>ড্যাশবোর্ড</em></h1>'+
+    '<p>সমস্ত অধ্যায় ও মক টেস্ট আনলক — স্বাগতম, '+CU.name+'!</p>'+
+    '<div class="user-chip"><span>'+CU.emoji+'</span><span>'+CU.name+'</span>'+
+    '<span class="paid-badge">⭐ PAID</span></div>'+
+    '<div class="paid-home-stats">'+
+    '<div class="hs-i"><div class="num" style="color:#fff">'+
+    TREE.reduce((a,s)=>a+s.subs.reduce((b,st)=>b+st.chapters.length,0),0)+
+    'টি</div><div class="lbl">মোট অধ্যায়</div></div>'+
+    '<div class="hs-i"><div class="num" style="color:#fff">'+
+    TREE.reduce((a,s)=>a+s.subs.reduce((b,st)=>b+st.chapters.reduce((c,ch)=>c+ch.q,0),0),0)+
+    '+</div><div class="lbl">মোট প্রশ্ন</div></div>'+
+    '<div class="hs-i"><div class="num" style="color:var(--yellow)">∞</div><div class="lbl">সীমাহীন অ্যাক্সেস</div></div>'+
+    '</div></div>';
+  document.getElementById('home-sec-title').textContent='📚 সমস্ত বিষয়সমূহ';
+  document.getElementById('home-sec-sub').textContent='সমস্ত অধ্যায় আনলক — যেকোনো বিষয় থেকে শুরু করুন';
+  // Paid strip + subjects
+  const g=document.getElementById('subj-grid');
+  const stripHTML='<div class="paid-strip" style="grid-column:1/-1">'+
+    '<div class="paid-strip-ic">🎓</div>'+
+    '<div><h4>পূর্ণ অ্যাক্সেস সক্রিয়</h4>'+
+    '<p>সমস্ত অধ্যায়, মক টেস্ট ও ব্যাখ্যা অ্যাক্সেস করুন</p></div>'+
+    '</div>';
+  g.innerHTML=stripHTML + renderSubjectCards(true);
+}
+
+function renderSubjectCards(paid){
+  return TREE.map(s=>{
+    const isComing=s.subs.length===0;
+    const totCh=s.subs.reduce((a,st)=>a+st.chapters.length,0);
+    const totQ=s.subs.reduce((a,st)=>a+st.chapters.reduce((b,c)=>b+c.q,0),0);
+    const freeCh=s.subs.reduce((a,st)=>a+st.chapters.filter(c=>c.free).length,0);
+    // For free users: if subject has NO free chapters, lock entire card
+    const subjectHasFree=freeCh>0||isComing;
+    const canEnter=paid||subjectHasFree;
+    let lockHTML='';
+    if(!paid&&!subjectHasFree&&!isComing){
+      lockHTML='<div class="lock-overlay"><div class="lo-ic">🔒</div>'+
+        '<div class="lo-msg">পেইড সদস্যদের জন্য</div>'+
+        '<button class="lo-btn" onclick="event.stopPropagation();showUpgrade()">⭐ আপগ্রেড</button></div>';
+    }
+    const cornerHTML=isComing?'<span class="subj-corner soon-c">শীঘ্রই</span>':
+      (paid?'':'<span class="subj-corner free-c">'+freeCh+' বিনামূল্যে</span>');
+    return '<div class="subj-card'+(isComing?' soon':(!paid&&!subjectHasFree?' locked-card':''))+'"'+
+      (canEnter&&!isComing?' onclick="openSubject(''+s.id+'')"':'')+'>'+
+      '<div class="subj-banner" style="background:'+s.color+'">'+s.icon+cornerHTML+'</div>'+
+      '<div class="subj-body"><h3>'+s.title+'</h3><p>'+s.desc+'</p>'+
+      '<div class="subj-metas">'+
+      (s.subs.length?'<span class="sm-t">📂 '+s.subs.length+' উপবিষয়</span>':'')+
+      (totCh?'<span class="sm-t">📖 '+totCh+' অধ্যায়</span>':'')+
+      (totQ?'<span class="sm-t">❓ '+totQ+'+ প্রশ্ন</span>':'')+
+      '</div><div class="subj-footer">'+
+      (isComing?'<span style="font-size:13px;color:var(--gray-400);font-weight:600">🔔 শীঘ্রই আসছে</span>':
+        canEnter?'<button class="btn-enter" onclick="event.stopPropagation();openSubject(''+s.id+'')">প্রবেশ করুন →</button>':
+        '<button class="lo-btn" onclick="showUpgrade()">⭐ আপগ্রেড</button>')+
+      '</div></div>'+lockHTML+'</div>';
+  }).join('');
+}
+
+function safeHome(){
+  if(quizStarted&&!quizFinished){ if(!confirm('পরীক্ষা ছেড়ে যাবেন?')) return; }
+  clearInterval(timerInt); quizStarted=false; quizFinished=false;
+  answers=new Array(quizData.length).fill(null); timeLeft=3600;
+  document.getElementById('timer-el').textContent='⏱ 60:00';
+  document.getElementById('timer-el').classList.remove('warn');
+  document.getElementById('result-screen').classList.remove('open');
+  document.getElementById('result-screen').style.display='none';
+  showHome();
+}
+
+function doLogout(){
+  if(!confirm('লগআউট করবেন?')) return;
+  if(CU) remSess(CU.id);
+  stopHB(); CU=null; quizStarted=false; quizFinished=false; clearInterval(timerInt);
+  ALL_SCR.forEach(s=>{ const el=document.getElementById(s); el.classList.remove('active'); el.style.display=''; });
+  document.getElementById('result-screen').style.display='none';
+  const ls=document.getElementById('login-screen');
+  ls.style.display=''; ls.classList.add('active');
+  document.getElementById('pw-inp').disabled=false;
+  document.getElementById('pw-inp').value='';
+  document.getElementById('pw-btn').disabled=false;
+  document.getElementById('pw-btn').textContent='🚀 প্রবেশ করুন';
+  clearPWmsgs();
+  document.getElementById('pw-badge').classList.remove('show');
+  document.getElementById('pw-att').textContent='';
+  document.getElementById('tuser').style.display='none';
+  document.getElementById('sticky-back').classList.remove('show');
+  backStack=[];
+  window.scrollTo(0,0);
+}
+
+// ══ SUBJECT → SUBTOPIC ══
+function openSubject(sid){
+  curSid=sid;
+  const s=TREE.find(x=>x.id===sid); if(!s) return;
+  backStack.push(()=>openSubject(sid));
+  showOnly('sub-screen');
+  document.getElementById('sub-hbar').innerHTML=
+    '<div style="font-size:36px;margin-bottom:8px">'+s.icon+'</div>'+
+    '<h2>'+s.title+'</h2><p>'+s.desc+'</p>';
+  document.getElementById('sub-title').textContent=s.title;
+  document.getElementById('sub-sub').textContent=s.subs.length+'টি উপবিষয় পাওয়া গেছে';
+  setBc([{label:'🏠',fn:'safeHome()'},{label:s.icon+' '+s.title}]);
+  document.getElementById('st-grid').innerHTML=s.subs.map(st=>
+    '<div class="st-card" onclick="openSub(''+st.id+'')">'+
+    '<div class="st-ic">'+st.icon+'</div>'+
+    '<div class="st-info"><h4>'+st.title+'</h4><p>'+st.chapters.length+'টি অধ্যায়</p></div>'+
+    '<div class="st-arr">›</div></div>'
+  ).join('');
+  window.scrollTo(0,0);
+}
+
+// ══ SUBTOPIC → CHAPTERS ══
+function openSub(stid){
+  curStid=stid;
+  const s=TREE.find(x=>x.id===curSid), st=s.subs.find(x=>x.id===stid); if(!st) return;
+  const paid=isPaid(CU.id)||CU.admin;
+  backStack.push(()=>openSub(stid));
+  showOnly('ch-screen');
+  document.getElementById('ch-hbar').innerHTML=
+    '<div style="font-size:32px;margin-bottom:7px">'+st.icon+'</div>'+
+    '<h2>'+st.title+'</h2><p>'+st.chapters.length+'টি অধ্যায়</p>';
+  document.getElementById('ch-title').textContent=st.title;
+  document.getElementById('ch-sub').textContent='একটি অধ্যায় বেছে নিন';
+  setBc([{label:'🏠',fn:'safeHome()'},{label:s.icon+' '+s.title,fn:'openSubject("'+curSid+'")'},{label:st.icon+' '+st.title}]);
+  const canAcc=ch=>ch.free||paid;
+  document.getElementById('ch-grid').innerHTML=st.chapters.map(ch=>{
+    const ok=canAcc(ch);
+    const mts=getMockTests(ch.id);
+    const mtCount=mts.length;
+    const freeMts=mts.filter(m=>m.free).length;
+    return '<div class="ch-card '+(ok?'ok':'locked')+'"'+(ok?' onclick="openChapter(''+ch.id+'')"':'')+'>'+
+      '<div class="ch-body"><div class="ch-ic">'+ch.icon+'</div><h4>'+ch.title+'</h4>'+
+      '<p>'+ch.desc+'</p>'+
+      '<div class="ch-footer">'+
+      '<span class="ch-q">📝 '+ch.q+' প্রশ্ন • 🗂 '+mtCount+' মক টেস্ট'+(freeMts>0&&!paid?' ('+freeMts+' বিনামূল্যে)':'')+'</span>'+
+      '<span class="'+(ch.free?'free-tag':'paid-tag')+'">'+(ch.free?'✅ বিনামূল্যে':'⭐ পেইড')+'</span>'+
+      '</div></div>'+
+      (!ok?'<div class="ch-lock"><div class="ch-lock-ic">🔒</div>'+
+        '<div class="ch-lock-msg">পেইড সদস্যদের জন্য</div>'+
+        '<button class="ch-lock-btn" onclick="event.stopPropagation();showUpgrade()">⭐ আপগ্রেড</button></div>':'')+
+      '</div>';
+  }).join('');
+  window.scrollTo(0,0);
+}
+
+// ══ CHAPTER → MOCK TEST LIST ══
+function openChapter(chid){
+  curChid=chid;
+  const s=TREE.find(x=>x.id===curSid), st=s.subs.find(x=>x.id===curStid), ch=st.chapters.find(x=>x.id===chid); if(!ch) return;
+  const paid=isPaid(CU.id)||CU.admin;
+  const mts=getMockTests(chid);
+  backStack.push(()=>openChapter(chid));
+  showOnly('mocktest-screen');
+  document.getElementById('mt-hero').innerHTML=
+    '<div style="font-size:30px;margin-bottom:7px">'+ch.icon+'</div>'+
+    '<h2>'+ch.title+'</h2><p>'+ch.desc+' — '+mts.length+'টি মক টেস্ট উপলব্ধ</p>';
+  document.getElementById('mt-title').textContent=ch.title+' — মক টেস্ট';
+  document.getElementById('mt-sub').textContent='একটি মক টেস্ট বেছে নিন';
+  setBc([{label:'🏠',fn:'safeHome()'},{label:s.icon+' '+s.title,fn:'openSubject("'+curSid+'")'},{label:st.icon+' '+st.title,fn:'openSub("'+curStid+'")'},{label:ch.icon+' '+ch.title}]);
+  const canAcc=mt=>mt.free||paid;
+  document.getElementById('mt-list').innerHTML=mts.map((mt,idx)=>{
+    const ok=canAcc(mt);
+    const isExt=mt.type==='external';
+    const isQuiz=mt.type==='quiz';
+    let actionHTML='';
+    if(ok){
+      if(isExt){
+        actionHTML='<a class="btn-mt-ext" href="'+mt.url+'" target="_blank" rel="noopener">🔗 খুলুন ↗</a>';
+      } else if(isQuiz){
+        actionHTML='<button class="btn-mt-start" onclick="openMockTest(''+mt.id+'')">▶ শুরু করুন</button>';
+      } else {
+        actionHTML='<button class="btn-mt-start" onclick="openMockTest(''+mt.id+'')">▶ শুরু করুন</button>';
+      }
+    }
+    return '<div class="mt-item '+(ok?'ok':'locked')+'">'+
+      '<div class="mt-item-num">'+(idx+1)+'</div>'+
+      '<div class="mt-item-info">'+
+        '<h4>'+mt.title+
+          '<span style="margin-left:6px" class="'+(mt.free?'mt-free-badge':'mt-paid-badge')+'">'+
+          (mt.free?'✅ বিনামূল্যে':'⭐ পেইড')+'</span>'+
+          (isExt?'<span style="margin-left:5px;font-size:10px;background:#e0f2fe;color:#0369a1;padding:2px 6px;border-radius:5px;font-weight:700">🔗 বাহ্যিক লিংক</span>':'')+
+        '</h4>'+
+        '<p>'+mt.desc+'</p>'+
+        '<div class="mt-item-meta">'+
+          '<span class="mt-meta-tag">📝 '+mt.q+' প্রশ্ন</span>'+
+          '<span class="mt-meta-tag">⏱ '+mt.time+' মিনিট</span>'+
+          (isExt?'<span class="mt-meta-tag">🌐 বাইরের লিংক</span>':'<span class="mt-meta-tag">🏠 এই প্ল্যাটফর্মে</span>')+
+        '</div>'+
+      '</div>'+
+      '<div class="mt-item-action">'+
+        (ok?actionHTML:'<div class="mt-lock-strip" onclick="showUpgrade()">🔒 আপগ্রেড</div>')+
+      '</div>'+
+    '</div>';
+  }).join('');
+  window.scrollTo(0,0);
+}
+
+function openMockTest(mtid){
+  curMtid=mtid;
+  // Find the mock test
+  let mt=null, ch=null;
+  for(const [chid,mts] of Object.entries(MOCK_TESTS)){
+    const found=mts.find(m=>m.id===mtid);
+    if(found){ mt=found; ch=chid; break; }
+  }
+  if(!mt) return;
+  const s=TREE.find(x=>x.id===curSid), st=s.subs.find(x=>x.id===curStid), chObj=st.chapters.find(x=>x.id===ch);
+  backStack.push(()=>openChapter(ch));
+  showOnly('start-screen');
+  document.getElementById('s-ico').textContent=chObj?chObj.icon:'📝';
+  document.getElementById('s-title').textContent=mt.title;
+  document.getElementById('s-sub').textContent=mt.desc+' — ইতিহাস পাঠশালা';
+  document.getElementById('s-qc').textContent=mt.q;
+  setBc([{label:'🏠',fn:'safeHome()'},{label:chObj?chObj.title:'',fn:'openChapter("'+ch+'")'},{label:mt.title}]);
+  window.scrollTo(0,0);
+}
+
+function goBackFromStart(){
+  if(backStack.length>1){ backStack.pop(); const fn=backStack[backStack.length-1]; if(fn) fn(); }
+  else safeHome();
+}
+
+function showUpgrade(){ document.getElementById('upg-modal').classList.add('open'); }
+function closeModal(){ document.getElementById('upg-modal').classList.remove('open'); }
+
+// ══ ADMIN ══
+let tmpP={};
+function openAdmin(){
+  if(!CU||!CU.admin){alert('অ্যাক্সেস নেই'); return;}
+  renderAdmin(); showOnly('admin-screen'); window.scrollTo(0,0);
+}
+function closeAdmin(){ showHome(); }
+function renderAdmin(){
+  const ud=getStore(); tmpP={};
+  ud.forEach(u=>tmpP[u.id]=u.paid);
+  const rows=USERS.map(u=>{
+    const paid=tmpP[u.id]; const dc=devCount(u.id);
+    return '<tr><td><div style="display:flex;align-items:center;gap:7px"><span style="font-size:16px">'+u.emoji+'</span>'+
+      '<div><div style="font-weight:700;font-size:14px">'+u.name+'</div><div style="font-size:11px;color:var(--gray-400)">'+u.role+'</div></div></div></td>'+
+      '<td><button class="status-tog '+(paid?'paid':'free')+'" id="tog-'+u.id+'" onclick="togP(''+u.id+'')">'+(paid?'⭐ PAID':'🔓 FREE')+'</button></td>'+
+      '<td style="font-size:12px;color:'+(dc>0?'var(--blue)':'var(--gray-400)')+'">'+dc+'/'+MAX_DEV+' ডিভাইস</td></tr>';
+  }).join('');
+  document.getElementById('u-mgmt').innerHTML='<table class="u-table"><thead><tr><th>ব্যবহারকারী</th><th>স্ট্যাটাস</th><th>ডিভাইস</th></tr></thead><tbody>'+rows+'</tbody></table>';
+  document.getElementById('save-msg').classList.remove('show');
+}
+function togP(uid){ tmpP[uid]=!tmpP[uid]; const b=document.getElementById('tog-'+uid); b.className='status-tog '+(tmpP[uid]?'paid':'free'); b.textContent=tmpP[uid]?'⭐ PAID':'🔓 FREE'; }
+function saveAdmin(){ let ud=getStore(); ud.forEach(u=>{ if(tmpP.hasOwnProperty(u.id)) u.paid=tmpP[u.id]; }); setStore(ud); const m=document.getElementById('save-msg'); m.classList.add('show'); setTimeout(()=>m.classList.remove('show'),3000); }
+function clearSessions(){ if(confirm('সব সেশন মুছবেন?')){ localStorage.removeItem(SS); renderAdmin(); alert('✅ সব সেশন মুছে ফেলা হয়েছে।'); } }
+
+// ══ SOUND ══
+function getAudioCtx(){
+  if(!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  if(audioCtx.state === 'suspended') audioCtx.resume();
+  return audioCtx;
+}
+
+// ✅ Correct Answer — bright cheerful chime (like Testbook's ding-ding)
+function playCorrectSound(){
+  if(!soundEnabled) return;
+  try{
+    const ctx = getAudioCtx();
+    const notes = [523.25, 659.25, 783.99, 1046.50]; // C5 E5 G5 C6
+    notes.forEach((freq, i) => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(freq, ctx.currentTime + i * 0.1);
+      gain.gain.setValueAtTime(0, ctx.currentTime + i * 0.1);
+      gain.gain.linearRampToValueAtTime(0.28, ctx.currentTime + i * 0.1 + 0.02);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + i * 0.1 + 0.35);
+      osc.start(ctx.currentTime + i * 0.1);
+      osc.stop(ctx.currentTime + i * 0.1 + 0.35);
+    });
+    // Add a sparkle shimmer on top
+    setTimeout(()=>{
+      try{
+        const ctx2 = getAudioCtx();
+        const osc2 = ctx2.createOscillator();
+        const gain2 = ctx2.createGain();
+        osc2.connect(gain2);
+        gain2.connect(ctx2.destination);
+        osc2.type = 'triangle';
+        osc2.frequency.setValueAtTime(2093, ctx2.currentTime);
+        osc2.frequency.exponentialRampToValueAtTime(1400, ctx2.currentTime + 0.2);
+        gain2.gain.setValueAtTime(0.15, ctx2.currentTime);
+        gain2.gain.exponentialRampToValueAtTime(0.001, ctx2.currentTime + 0.2);
+        osc2.start(ctx2.currentTime);
+        osc2.stop(ctx2.currentTime + 0.2);
+      }catch(e){}
+    }, 280);
+  }catch(e){}
+}
+
+// ❌ Wrong Answer — dull descending thud (like Testbook's buzzer)
+function playWrongSound(){
+  if(!soundEnabled) return;
+  try{
+    const ctx = getAudioCtx();
+    // Low buzzer drop
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    const distortion = ctx.createWaveShaper();
+    function makeDistortionCurve(amount){
+      const samples = 256, curve = new Float32Array(samples);
+      for(let i=0;i<samples;i++){
+        const x = i*2/samples-1;
+        curve[i] = (Math.PI+amount)*x/(Math.PI+amount*Math.abs(x));
+      }
+      return curve;
+    }
+    distortion.curve = makeDistortionCurve(60);
+    osc.connect(distortion);
+    distortion.connect(gain);
+    gain.connect(ctx.destination);
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(220, ctx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(110, ctx.currentTime + 0.15);
+    gain.gain.setValueAtTime(0.22, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.35);
+    osc.start(ctx.currentTime);
+    osc.stop(ctx.currentTime + 0.35);
+    // Second low thump
+    setTimeout(()=>{
+      try{
+        const ctx3 = getAudioCtx();
+        const osc3 = ctx3.createOscillator();
+        const gain3 = ctx3.createGain();
+        osc3.connect(gain3);
+        gain3.connect(ctx3.destination);
+        osc3.type = 'square';
+        osc3.frequency.setValueAtTime(180, ctx3.currentTime);
+        osc3.frequency.exponentialRampToValueAtTime(80, ctx3.currentTime + 0.2);
+        gain3.gain.setValueAtTime(0.15, ctx3.currentTime);
+        gain3.gain.exponentialRampToValueAtTime(0.001, ctx3.currentTime + 0.2);
+        osc3.start(ctx3.currentTime);
+        osc3.stop(ctx3.currentTime + 0.2);
+      }catch(e){}
+    }, 150);
+  }catch(e){}
+}
+
+// 🔕 Mute toggle
+function toggleSound(){
+  soundEnabled = !soundEnabled;
+  const btn = document.getElementById('sound-toggle-btn');
+  if(btn) btn.textContent = soundEnabled ? '🔊' : '🔇';
+}
+
+// ══ QUIZ ══
+const quizData = [
+  { question: "'আর্য' কথার অর্থ কী?", options: ["সদ বংশজাত ব্যক্তি","যাযাবর জাতি","পুরোহিত শ্রেণী","কৃষিজীবী সম্প্রদায়"], answer: 0, explanation: "ভাষাগত দিক থেকে 'আর্য' শব্দের আক্ষরিক অর্থ হলো সদ বংশজাত ব্যক্তি বা অভিজাত ব্যক্তি।" },
+  { question: "বিভিন্ন বেদ ও তার সাথে যুক্ত ব্রাহ্মণ অনুসারে নিম্নের কোনটি সঠিক নয়?", options: ["ঋগ্বেদ-> ঐতরেয় ও কৈশিতাকি","শুক্ল যজুর্বেদ-> শতপথ, কৃষ্ণ যজুর্বেদ- তৈতিরিয়","অথর্ববেদ-> গোপথ","সামবেদ-> ঐতরেয় ও জৈমিনেয়"], answer: 3, explanation: "সামবেদের সাথে যুক্ত প্রধান ব্রাহ্মণ গ্রন্থ হলো তাণ্ড্য মহাব্রাহ্মণ (বা পঞ্চবিংশ ব্রাহ্মণ), ষড়বিংশ ব্রাহ্মণ এবং জৈমিনীয় ব্রাহ্মণ।" },
+  { question: "'আর্য' বলতে কী বোঝানো হয়?", options: ["একটি নির্দিষ্ট ধর্মাবলম্বী মানুষকে","একটি বিশেষ নৃতাত্ত্বিক জাতিকে","আর্যভাষা ব্যবহারকারী জনগোষ্ঠীকে","একটি ভৌগোলিক অঞ্চলের অধিবাসীদের"], answer: 2, explanation: "আধুনিক গবেষকদের মতে, আর্য কোনো একক জাতি নয়, বরং এটি একটি নির্দিষ্ট ভাষা গোষ্ঠী বা আর্যভাষা ব্যবহারকারী জনগোষ্ঠীকে নির্দেশ করে।" },
+  { question: "আর্যরা ভারতের প্রাচীন অধিবাসীদের কী বলে অভিহিত করত?", options: ["দাস বা দস্যু","ম্লেচ্ছ","যবন","শূদ্র"], answer: 0, explanation: "ভারতে আগমনের পর আর্যরা এখানকার আদি বা প্রাচীন অধিবাসীদের 'দাস' বা 'দস্যু' বলে অভিহিত করত।" },
+  { question: "বৈদিক সভ্যতা কী ধরনের সভ্যতা ছিল?", options: ["নগরকেন্দ্রিক","গ্রামকেন্দ্রিক","নদীমাতৃক নগর সভ্যতা","যাযাবর কেন্দ্রিক"], answer: 1, explanation: "সিন্ধু সভ্যতার মতো নগরকেন্দ্রিক না হয়ে, বৈদিক সভ্যতা ছিল মূলত একটি গ্রামীণ ও কৃষিভিত্তিক গ্রামকেন্দ্রিক সভ্যতা।" },
+  { question: "ঋকবেদের উপবেদের নাম কি?", options: ["শিল্প বেদ","গান্ধর্ব বেদ","ধনুর্বেদ","আয়ুর্বেদ"], answer: 3, explanation: "ঋকবেদের উপবেদের নাম আয়ুর্বেদ। এটি স্বাস্থ্য, চিকিৎসা বিজ্ঞান এবং দীর্ঘায়ু সম্পর্কিত বিষয় নিয়ে আলোচনা করে।" },
+  { question: "সামবেদের উপবেদের নাম কি?", options: ["শিল্প বেদ","গান্ধর্ব বেদ","ধনুর্বেদ","আয়ুর্বেদ"], answer: 1, explanation: "সাম বেদের উপবেদের নাম গন্ধর্ববেদ। এটি মূলত ভারতীয় সঙ্গীত, নৃত্যকলা, যন্ত্রসঙ্গীত এবং নাট্যশাস্ত্রের সাথে সম্পর্কিত।" },
+  { question: "যজুর্বেদ এর উপবেদের নাম কি?", options: ["শিল্প বেদ","গান্ধর্ব বেদ","ধনুর্বেদ","আয়ুর্বেদ"], answer: 2, explanation: "যজুর্বেদের উপবেদ হলো ধনুর্বেদ। এটি মূলত যুদ্ধবিদ্যা, অস্ত্রশস্ত্রের ব্যবহার এবং ধনুর্বিদ্যার বিজ্ঞান নিয়ে আলোচনা করে।" },
+  { question: "অথর্ববেদ এর উপবেদের নাম কি?", options: ["শিল্প বেদ","গান্ধর্ব বেদ","ধনুর্বেদ","চতুরর্বেদ"], answer: 0, explanation: "শিল্পবেদ (বা স্থপত্যবেদ) অথর্ববেদের অন্যতম প্রধান উপবেদ।" },
+  { question: "আর্যরা ভারতের কোন অঞ্চলে প্রথম বসতি গড়ে তুলেছিল?", options: ["গাঙ্গেয় উপত্যকায়","দাক্ষিণাত্যের মালভূমিতে","সপ্তসিন্ধু অঞ্চলে","ব্রহ্মপুত্র অববাহিকায়"], answer: 2, explanation: "ভারতে এসে আর্যরা প্রথম সিন্ধু নদ এবং তার উপনদী বিধৌত পাঞ্জাব বা 'সপ্তসিন্ধু' অঞ্চলে তাদের প্রথম বসতি গড়ে তোলে।" },
+  { question: "আর্যরা কোথা থেকে ভারতে প্রবেশ করেছে বলে অধিকাংশ পণ্ডিত মনে করেন?", options: ["ইউরোপ থেকে","উত্তর মেরু অঞ্চল থেকে","তিব্বত থেকে","মিশর থেকে"], answer: 0, explanation: "আর্যদের আদি বাসস্থান নিয়ে অনেক বিতর্ক থাকলেও অধিকাংশ পণ্ডিতের মতে তারা ইউরোপ বা মধ্য এশিয়া অঞ্চল থেকে ভারতে প্রবেশ করেছিল।" },
+  { question: "কোন কোন ঐতিহাসিক ও গবেষক মনে করেন আর্যদের আদি জন্মভূমি হলো ভারতবর্ষ?", options: ["ম্যাক্সমুলার ও স্যার জন মার্শাল","মার্টিমার হুইলার ও গর্ডন চাইল্ড","ডক্টর রমেশচন্দ্র মজুমদার ও রমিলা থাপার","পণ্ডিত গঙ্গানাথ ঝা, ডি এস ত্রিবেদী, এ সি দাস, পারজিটার প্রমুখ"], answer: 3, explanation: "পণ্ডিত গঙ্গানাথ ঝা, ডি এস ত্রিবেদী, এ সি দাস এবং পারজিটার প্রমুখ গবেষকেরা মনে করেন আর্যদের আদি বাসভূমি ভারতের অভ্যন্তরেই ছিল।" },
+  { question: "আর্যদের আদি বাসভূমি বিতর্কে কোন ঐতিহাসিকের মত সবথেকে গ্রহণযোগ্য?", options: ["অধ্যাপক ব্র্যান্ডেনস্টাইন","ম্যাক্সমুলার","উইলার্ড লিবি","ডক্টর সুকুমার সেন"], answer: 0, explanation: "আর্যদের আদি বাসভূমি সংক্রান্ত নানা তত্ত্বের মধ্যে অধ্যাপক ব্র্যান্ডেনস্টাইনের ভাষাতাত্ত্বিক মতবাদটি সবথেকে বেশি গ্রহণযোগ্য।" },
+  { question: "অধ্যাপক ব্র্যান্ডেনস্টাইনের মতে আর্যদের আদি বাসভূমি কোন অঞ্চলে?", options: ["ইউরোপের হাঙ্গেরিতে","উত্তর মেরু অঞ্চলে","রাশিয়ার অন্তর্গত কিরগিজ স্তেপ অঞ্চলে","পারস্য বা ইরানে"], answer: 2, explanation: "অধ্যাপক ব্র্যান্ডেনস্টাইনের মতে আর্যদের আদি বাসভূমি ছিল রাশিয়ার উরাল পর্বতের দক্ষিণে অবস্থিত কিরগিজ স্তেপ অঞ্চলে।" },
+  { question: "ঋগ্বেদের সংস্কৃত ভাষার সাথে প্রাচীন কোন ধর্মগ্রন্থের ভাষার সাদৃশ্য দেখা যায়?", options: ["বৌদ্ধদের ত্রিপিটক","পারসিক ধর্মগ্রন্থ জেন্দ আবেস্তা","খ্রিস্টানদের বাইবেল","ইহুদীদের তোরাহ"], answer: 1, explanation: "প্রাচীন পারসিক বা ইরানিদের ধর্মীয় গ্রন্থ 'জেন্দ আবেস্তা'-এর ভাষার সাথে ঋগ্বেদের বৈদিক সংস্কৃত ভাষার গভীর মিল রয়েছে।" },
+  { question: "আর্যরা প্রথম কী ধরনের লিপি সৃষ্টি করেন?", options: ["চিত্র লিপি","কীলক লিপি","রৈখিক লিপি","খরোষ্ঠী লিপি"], answer: 2, explanation: "লিপিমালার বিবর্তনের ইতিহাসে আর্যদের দ্বারা তৈরিকৃত প্রাথমিক লিপিটি ছিল এক ধরণের রৈখিক লিপি।" },
+  { question: "বোগাজকোই শিলালেখটি কোথায় পাওয়া যায়?", options: ["মিশরে","এশিয়া মাইনরে","ইরানের পাহাড়ে","আফগানিস্তানে"], answer: 1, explanation: "আর্যদের প্রাচীন ইতিহাস ও দেবতাদের নাম সম্বলিত বিখ্যাত বোগাজকোই শিলালিপিটি এশিয়া মাইনর (বর্তমান তুরস্ক) অঞ্চলে পাওয়া গেছে।" },
+  { question: "তেল-এল-আমর্ণা শিলালেখটি কোথায় পাওয়া যায়?", options: ["মেসোপটেমিয়ায়","মিশরে","গ্রীসে","ভারতে"], answer: 1, explanation: "বিখ্যাত তেল-এল-আমর্ণা শিলালিপিটি মিশরে (Egypt) আবিষ্কৃত হয়েছে।" },
+  { question: "আর্যরা ভারতে কোন সভ্যতা ধ্বংস করে বসতি গড়ে তুলেছিল?", options: ["মেহেরগড় সভ্যতা","বৈদিক সভ্যতা","মিশরীয় সভ্যতা","সিন্ধু বা হরপ্পা সভ্যতা"], answer: 3, explanation: "ঐতিহাসিকদের একটি বড় অংশের মতে আর্যরা ভারতে এসে সিন্ধু বা হরপ্পা সভ্যতা ধ্বংস করে নিজেদের সংস্কৃতি গড়ে তোলে।" },
+  { question: "আর্যরা কখন ভারতে আসে?", options: ["আনুমানিক ১৫০০ খ্রিষ্ট পূর্বাব্দ বা তার আগে","আনুমানিক ১০০০ খ্রিষ্ট পূর্বাব্দে","আনুমানিক ৫০০ খ্রিষ্ট পূর্বাব্দে","খ্রিষ্টীয় প্রথম শতকে"], answer: 0, explanation: "সাধারণ ঐতিহাসিক হিসাব অনুযায়ী আর্যদের ভারতে আগমনের সময়কাল আনুমানিক ১৫০০ খ্রিষ্ট পূর্বাব্দ বা তার কিছু আগে।" },
+  { question: "ঋগ্বেদে বার বার উল্লেখিত হয়েছে কোন দুটি নদীর নাম?", options: ["গঙ্গা ও যমুনা","সিন্ধু ও সরস্বতী","নর্মদা ও তাপ্তী","গোদাভরী ও কৃষ্ণা"], answer: 1, explanation: "ঋগ্বেদের শ্লোকগুলিতে সবচেয়ে পবিত্র ও গুরুত্বপূর্ণ নদী হিসেবে সিন্ধু এবং সরস্বতী নদীর নাম বারবার এসেছে।" },
+  { question: "বৈদিক যুগকে কয়ভাগে ভাগ করা হয়?", options: ["দুই ভাগে","তিন ভাগে","চার ভাগে","কোনোটিই নয়"], answer: 0, explanation: "সমগ্র বৈদিক যুগকে মূলত দুই ভাগে ভাগ করা হয়—ঋকবৈদিক যুগ ও পরবর্তী বৈদিক যুগ।" },
+  { question: "ঋকবৈদিক যুগের সময়কাল কত?", options: ["আনুমানিক ২০০০ থেকে ১৫০০ খ্রিষ্ট পূর্বাব্দ","আনুমানিক ১৫০০ থেকে ১০০০ খ্রিষ্ট পূর্বাব্দ","আনুমানিক ১০০০ থেকে ৬০০ খ্রিষ্ট পূর্বাব্দ","আনুমানিক ৬০০ থেকে ৩০০ খ্রিষ্ট পূর্বাব্দ"], answer: 1, explanation: "ঋকবৈদিক যুগের সময়কাল আনুমানিক ১৫০০ থেকে ১০০০ খ্রিষ্ট পূর্বাব্দ পর্যন্ত।" },
+  { question: "পরবর্তী বৈদিক যুগের সময়কাল কত?", options: ["আনুমানিক ১৫০০ থেকে ১০০০ খ্রিষ্ট পূর্বাব্দ","আনুমানিক ১০০০ থেকে ৬০০ খ্রিষ্ট পূর্বাব্দ","আনুমানিক ৬০০ থেকে খ্রিষ্টপূর্ব ১০০ অব্দ","আনুমানিক ৩০০০ খ্রিষ্ট পূর্বাব্দ"], answer: 1, explanation: "পরবর্তী বৈদিক যুগের সময়কাল আনুমানিক ১০০০ থেকে ৬০০ খ্রিষ্ট পূর্বাব্দ।" },
+  { question: "ঋকবৈদিক যুগের প্রধান ঐতিহাসিক উপাদান কী?", options: ["উপনিষদ সমূহ","রামায়ণ ও মহাভারত","ঋগ্বেদের স্তোত্রগুলি","মহাভারত"], answer: 2, explanation: "ঋকবৈদিক যুগের ইতিহাস জানার প্রধান নির্ভরযোগ্য উপাদান হলো ঋগ্বেদের স্তোত্রগুলি।" },
+  { question: "পরবর্তী বৈদিক যুগের প্রধান ঐতিহাসিক উপাদান কী?", options: ["শুধু ঋগ্বেদ","কৌটিল্যের অর্থশাস্ত্র","অশোকের শিলালিপি","সামবেদ, যজুরবেদ, অথর্ববেদ এর সাথে ব্রাহ্মণ, আরণ্যক ও কয়েকটি উপনিষদ"], answer: 3, explanation: "পরবর্তী বৈদিক যুগের মূল উৎস হলো সাম, যজু, অথর্ববেদ এবং তৎসংলগ্ন ব্রাহ্মণ, আরণ্যক ও উপনিষদ গ্রন্থসমূহ।" },
+  { question: "ঋকবৈদিক যুগের রাষ্ট্রব্যবস্থার প্রকৃতি কেমন ছিল?", options: ["সাম্রাজ্যবাদী","গণতান্ত্রিক স্বৈরাচার","উপজাতিতান্ত্রিক","অভিজাততান্ত্রিক"], answer: 2, explanation: "আর্যদের রাষ্ট্র বা সমাজ ব্যবস্থা ছিল মূলত বিভিন্ন ছোট ছোট গোত্র বা উপজাতিতান্ত্রিক প্রকৃতির।" },
+  { question: "কুরু রাজ্যের রাজধানী কোথায় ছিল?", options: ["পাটলিপুত্রে","হস্তিনাপুর","মথুরায়","বারাণসীতে"], answer: 1, explanation: "'কুরু' রাজ্যের প্রাচীন রাজধানী ছিল হস্তিনাপুর।" },
+  { question: "বৈদিক সমাজ কী ধরনের ছিল?", options: ["মাতৃতান্ত্রিক","পিতৃতান্ত্রিক","শ্রেণীহীন সাম্যবাদী","যাযাবর সমাজ"], answer: 1, explanation: "বৈদিক আর্যদের সমাজ ও পরিবার ব্যবস্থা ছিল সম্পূর্ণভাবে পিতৃতান্ত্রিক।" },
+  { question: "আর্য সমাজে শ্রেষ্ঠ সম্প্রদায় কারা ছিল?", options: ["ক্ষত্রিয়রা","ব্রাহ্মণরা","বৈশ্যরা","শূদ্ররা"], answer: 1, explanation: "বৈদিক চতুর্বর্ণ প্রথার শীর্ষে থেকে ধর্মীয় ও সামাজিক দিক দিয়ে শ্রেষ্ঠ সম্প্রদায় হিসেবে বিবেচিত হতেন ব্রাহ্মণরা।" },
+  { question: "আর্যদের চতুর আশ্রমের নামগুলি কী কী?", options: ["ব্রহ্মচর্য, গার্হস্থ্য, বাণপ্রস্থ এবং সন্ন্যাস","ধর্ম, অর্থ, কাম এবং মোক্ষ","ঋক, সাম, যজু এবং অথর্ব","উপনয়ন, বিবাহ, শ্রাদ্ধ এবং সৎকার"], answer: 0, explanation: "একজন আর্য পুরুষের জীবনকালকে চারটি স্তরে ভাগ করা হতো যা চতুর আশ্রম নামে পরিচিত।" },
+  { question: "চতুর আশ্রমের প্রথম ও শেষ আশ্রম দুটি কী কী?", options: ["গার্হস্থ্য ও বাণপ্রস্থ","গার্হস্থ্য ও সন্ন্যাস","ব্রহ্মচর্য ও বাণপ্রস্থ","ব্রহ্মচর্য ও সন্ন্যাস"], answer: 3, explanation: "চতুর আশ্রমের প্রথম স্তর হলো ব্রহ্মচর্য এবং শেষ স্তল হলো সন্ন্যাস।" },
+  { question: "কোথায় প্রথম বর্ণভেদের উল্লেখ করা হয়?", options: ["সামবেদের গানগুলোতে","অথর্ববেদের জাদুটোনায়","ঋগ্বেদের দশম মণ্ডলের পুরুষসূক্তে","মুণ্ডক উপনিষদে"], answer: 2, explanation: "চতুর্বর্ণ বিভাগের প্রথম সুস্পষ্ট উল্লেখ পাওয়া যায় ঋগ্বেদের দশম মণ্ডলের 'পুরুষসূক্ত' নামক শ্লোকে।" },
+  { question: "ঋগ্বেদ অনুসারে আদি পুরুষের মুখমণ্ডল থেকে কোন বর্ণের সৃষ্টি হয়?", options: ["ব্রাহ্মণ","ক্ষত্রিয়","বৈশ্য","শূদ্র"], answer: 0, explanation: "পুরুষসূক্তের বর্ণনা অনুযায়ী আদি পুরুষের মুখমণ্ডল থেকে ব্রাহ্মণদের উৎপত্তি হয়েছিল।" },
+  { question: "ঋগ্বেদ অনুসারে আদি পুরুষের বাহুদ্বয় থেকে কোন বর্ণের সৃষ্টি হয়?", options: ["ব্রাহ্মণ","ক্ষত্রিয়","বৈশ্য","শূদ্র"], answer: 1, explanation: "বৈদিক রূপক বর্ণনা অনুসারে আদি পুরুষের বাহুযুগল থেকে ক্ষত্রিয় বর্ণের উৎপত্তি হয়েছিল।" },
+  { question: "ঋগ্বেদ অনুসারে আদি পুরুষের ঊরুদেশ থেকে কোন বর্ণের সৃষ্টি হয়?", options: ["ব্রাহ্মণ","ক্ষত্রিয়","বৈশ্য","শূদ্র"], answer: 2, explanation: "বৈদিক বিশ্বাস অনুযায়ী আদি পুরুষের ঊরু থেকে বৈশ্য বর্ণের উৎপত্তি হয়।" },
+  { question: "ঋগ্বেদ অনুসারে আদি পুরুষের পদযুগল থেকে কোন বর্ণের সৃষ্টি হয়?", options: ["ব্রাহ্মণ","ক্ষত্রিয়","বৈশ্য","শূদ্র"], answer: 3, explanation: "ঋগ্বেদের পুরুষসূক্তের রূপক অনুযায়ী আদি পুরুষের পদযুগল থেকে শূদ্র বর্ণের সৃষ্টি হয়েছিল।" },
+  { question: "ব্রাহ্মণদের কাজ কী ছিল?", options: ["যুদ্ধ করা ও দেশ শাসন","যাগযজ্ঞ ও পূজার্চনা","কৃষিকাজ ও পশুপালন","অন্যান্য তিন বর্ণের সেবা"], answer: 1, explanation: "বৈদিক সমাজে ব্রাহ্মণদের মূল দায়িত্ব ছিল যাগযজ্ঞ পরিচালনা করা, পূজার্চনা এবং বেদ পাঠ করা।" },
+  { question: "ক্ষত্রিয়দের কাজ কী ছিল?", options: ["বেদ পাঠ ও যজ্ঞ করা","দেশ শাসন ও দেশ রক্ষা করা","ব্যবসা-বাণিজ্য ও ঋণ দেওয়া","মাটির পাত্র তৈরি করা"], answer: 1, explanation: "ক্ষত্রিয় বর্ণের মানুষদের প্রধান কর্তব্য ছিল যুদ্ধক্ষেত্রে বীরত্ব প্রদর্শন, দেশ রক্ষা এবং রাজ্য শাসন।" },
+  { question: "বৈশ্যদের কাজ কী ছিল?", options: ["পূজার্চনা করা","যুদ্ধ করা ও সৈন্য পরিচালনা","ব্যবসা-বাণিজ্য, কৃষি ও পশুপালন করা","শুধু দাসত্ব করা"], answer: 2, explanation: "বৈশ্যরা ছিলেন বৈদিক অর্থনীতির মূল চালিকাশক্তি, যাদের প্রধান দায়িত্ব ছিল ব্যবসা-বাণিজ্য, কৃষিকাজ এবং পশুপালন।" },
+  { question: "আর্য শাসনে রাজাকে কোন দুটি প্রতিষ্ঠান পরামর্শ দিত?", options: ["পরিষদ ও সমিতি","বিধতা ও গণ","সভা ও সমিতি","কুল ও বিশ"], answer: 2, explanation: "বৈদিক যুগে রাজার ক্ষমতা নিয়ন্ত্রণ করতে 'সভা' ও 'সমিতি' নামক দুটি গণতান্ত্রিক প্রতিষ্ঠান ছিল।" },
+  { question: "'সভা' কাদের পরিষদ ছিল?", options: ["উপজাতি প্রধান ও প্রবীণদের পরিষদ","নগরের সাধারণ ব্যবসায়ীদের","নারী ও দাসদের পরিষদ","যুবক যোদ্ধাদের পরিষদ"], answer: 0, explanation: "'সভা' ছিল মূলত গণ্যমান্য, অভিজ্ঞ, বয়োবৃদ্ধ এবং উপজাতি প্রধানদের নিয়ে গঠিত একটি সীমিত পরিষদ।" },
+  { question: "'সমিতি' কাদের পরিষদ ছিল?", options: ["শুধু রাজপরিবারের সদস্যদের","উপজাতি সর্বসাধারণের পরিষদ","মহিলাদের ধর্মীয় পরিষদ","বিদেশী দূতদের পরিষদ"], answer: 1, explanation: "বৈদিক যুগের 'সমিতি' ছিল একটি বৃহত্তর জাতীয় পরিষদ, যেখানে সর্বসাধারণ নাগরিকেরা অংশ নিতে পারতেন।" },
+  { question: "'সভা' ও 'সমিতি' এর মধ্যে কোনটি বেশি শক্তিশালী ছিল?", options: ["সভা","সমিতি","উভয়ই সমান ছিল","বিদথ বেশি শক্তিশালী ছিল"], answer: 1, explanation: "সর্বসাধারণের প্রতিনিধিত্ব থাকায় 'সমিতি'-র ক্ষমতা ও প্রভাব সভার চেয়ে বেশি ছিল।" },
+  { question: "বিদথ কী?", options: ["এক ধরণের স্বর্ণমুদ্রা","লাঙলের একটি অংশ","প্রাচীন গণপরিষদ","একটি বৈদিক যজ্ঞ"], answer: 2, explanation: "'বিদথ' ছিল ঋকবৈদিক যুগের একটি অত্যন্ত প্রাচীন উপজাতীয় গণপরিষদ।" },
+  { question: "আর্যদের প্রধান দেবতা কে ছিলেন?", options: ["অগ্নি দেব","ইন্দ্র","প্রজাপতি ব্রহ্মা","শিব"], answer: 1, explanation: "ঋকবৈদিক যুগে আর্যদের সবচেয়ে জনপ্রিয় ও প্রধান দেবতা ছিলেন বজ্র ও যুদ্ধের দেবতা ইন্দ্র।" },
+  { question: "ঋকবৈদিক যুগে আকাশের দেবতা কে ছিলেন?", options: ["দ্যৌ (দ্যৌস)","অগ্নি","মরুৎ","পর্জন্য"], answer: 0, explanation: "ঋকবৈদিক যুগের একদম প্রাচীনতম দেবতাদের একজন ছিলেন আকাশের দেবতা 'দ্যৌ'।" },
+  { question: "ঋকবৈদিক যুগে বৃষ্টির দেবতা কে ছিলেন?", options: ["অগ্নি","সোম","ইন্দ্র","পর্জন্য"], answer: 3, explanation: "প্রকৃতির রূপ হিসেবে বৃষ্টি ও মেঘের দেবতা হিসেবে ঋগ্বেদে 'পর্জন্য'-এর আরাধনা করা হতো।" },
+  { question: "ঋকবৈদিক যুগে ধ্বংসের দেবতা কে ছিলেন?", options: ["ইন্দ্র","রুদ্র","মরুৎ","অগ্নি"], answer: 1, explanation: "ঋগ্বেদে 'রুদ্র' ছিলেন মূলত ক্রোধ, ঝড়-ঝঞ্ঝা এবং প্রতীকীভাবে ধ্বংসের রূপ।" },
+  { question: "ঋকবৈদিক যুগে শপথ ও প্রতিজ্ঞা রক্ষার দেবতা কে ছিলেন?", options: ["ইন্দ্র","মিত্র","যম","অশ্বিনদ্বয়"], answer: 1, explanation: "বৈদিক সমাজে পারস্পরিক চুক্তি, শপথ, সততা এবং প্রতিজ্ঞা রক্ষার তদারককারী দেবতা ছিলেন 'মিত্র'।" },
+  { question: "'পুরন্দর' কাকে বলা হতো?", options: ["অগ্নি দেবতাকে","ইন্দ্র দেবতাকে","বরুণ দেবতাকে","সূর্য দেবতাকে"], answer: 1, explanation: "শত্রুদের নগর বা দুর্গ ধ্বংস করতে পারতেন বলে ঋগ্বেদে ইন্দ্রকে 'পুরন্দর' বলা হয়েছে।" },
+  { question: "আর্যদের প্রাচীনতম গ্রন্থের নাম কী?", options: ["মহাভারত","সামবেদ","ঋগ্বেদ","রামায়ণ"], answer: 2, explanation: "ঋগ্বেদ হলো আর্যদের তথা সমগ্র মানব ইতিহাসের অন্যতম প্রাচীনতম লিখিত সাহিত্যিক নিদর্শন।" },
+  { question: "ঋগ্বেদে কতগুলি স্তোত্র আছে?", options: ["৫০০ টি","১০২৪ টি","১২০০ টি","১০২৮ টি"], answer: 3, explanation: "পবিত্র ঋগ্বেদ সংহিতায় মোট ১০২৮টি শ্লোক বা স্তোত্র রয়েছে।" },
+  { question: "'বেদ' কথার অর্থ কী?", options: ["ধর্ম","জ্ঞান","পূজা","সমাজ"], answer: 1, explanation: "সংস্কৃত 'বিদ' ধাতু থেকে বেদ শব্দটির উৎপত্তি, যার আক্ষরিক অর্থ হলো পরম 'জ্ঞান'।" },
+  { question: "বেদের অপর নাম কী?", options: ["সংহিতা","পুরাণ","শ্রুতি","বেদান্ত"], answer: 2, explanation: "প্রাচীনকালে বেদ শুনে শুনে মনে রাখতে হতো বলে বেদের অপর নাম 'শ্রুতি'।" },
+  { question: "বেদ কয় ভাগে বিভক্ত ও কী কী?", options: ["দুই ভাগে","তিন ভাগে","চার ভাগে - ঋক, সাম, যজু ও অথর্ব","পাঁচ ভাগে"], answer: 2, explanation: "বৈদিক সাহিত্য মূলত চারটি প্রধান বেদে বিভক্ত—ঋগ্বেদ, সামবেদ, যজুর্বেদ এবং অথর্ববেদ।" },
+  { question: "প্রতিটি বেদ কয় ভাগে বিভক্ত?", options: ["তিন ভাগে","চার ভাগে - সংহিতা, ব্রাহ্মণ, আরণ্যক ও উপনিষদ","দুই ভাগে","ছয় ভাগে"], answer: 1, explanation: "প্রতিটি বেদের রচনাকে চারটি ভাগে ভাগ করা হয়—সংহিতা, ব্রাহ্মণ, আরণ্যক ও উপনিষদ।" },
+  { question: "বেদের কোন অংশে দার্শনিক ব্যাখ্যা আছে?", options: ["সংহিতা অংশে","ব্রাহ্মণ অংশে","আরণ্যক ও উপনিষদে","বেদাঙ্গ সাহিত্যে"], answer: 2, explanation: "বেদের আরণ্যক ও উপনিষদ অংশে গভীর আধ্যাত্মিক তত্ত্ব ও দার্শনিক ব্যাখ্যা খুঁজে পাওয়া যায়।" },
+  { question: "উপনিষদ কী?", options: ["বেদের প্রথম ভাগকে উপনিষদ বলে","বেদের শেষ ভাগ বা বেদান্তকে উপনিষদ বলা হয়","এক ধরণের বৈদিক কর","আর্যদের একটি প্রধান যুদ্ধাস্ত্র"], answer: 1, explanation: "উপনিষদ হলো বৈদিক সাহিত্যের শেষ অংশ, যা বেদের সারবত্তা এবং দর্শনের মূল ভিত্তি।" },
+  { question: "বেদাঙ্গ কয়টি?", options: ["চারটি","ছয়টি","আটটি","বারোটি"], answer: 1, explanation: "বেদকে সঠিকভাবে বুঝতে মোট ছয়টি বেদাঙ্গ রচিত হয়েছিল।" },
+  { question: "বেদাঙ্গের ছয়টি সূত্র কী?", options: ["ঋক, সাম, যজু, অথর্ব, আয়ুর্বেদ, ধনুর্বেদ","শিক্ষা, ছন্দ, ব্যাকরণ, নিরুক্ত, জ্যোতিষ, কল্প","ব্রাহ্মণ, সংহিতা, আরণ্যক, উপনিষদ, সূত্র, পুরাণ","কোনোটিই নয়"], answer: 1, explanation: "বেদাঙ্গের ছয়টি প্রধান অঙ্গ হলো—শিক্ষা, ছন্দ, ব্যাকরণ, নিরুক্ত, জ্যোতিষ এবং কল্প।" },
+  { question: "সাংখ্য দর্শন তত্ত্বের শ্রেষ্ঠ কে ছিলেন?", options: ["গৌতম","কপিল","পতঞ্জলি","কণাদ"], answer: 1, explanation: "ভারতীয় ষড়দর্শনের অন্যতম প্রাচীন ধারা 'সাংখ্য দর্শন'-এর মূল প্রবক্তা হলেন মহর্ষি কপিল।" },
+  { question: "ন্যায় দর্শন তত্ত্বের শ্রেষ্ঠ কে ছিলেন?", options: ["জৈমিনীয়","কণাদ","গৌতম","বেদব্যাস"], answer: 2, explanation: "'ন্যায় দর্শন'-এর প্রতিষ্ঠাতা হলেন মহর্ষি গৌতম।" },
+  { question: "যোগ দর্শন তত্ত্বের শ্রেষ্ঠ কে ছিলেন?", options: ["পতঞ্জলি","কপিল","গৌতম","জৈমিনীয়"], answer: 0, explanation: "বিখ্যাত 'যোগ দর্শন'-এর শ্রেষ্ঠ প্রবক্তা হলেন মহর্ষি পতঞ্জলি।" },
+  { question: "বৈশেষিক দর্শন তত্ত্বের শ্রেষ্ঠ কে ছিলেন?", options: ["বেদব্যাস","কপিল","জৈমিনীয়","কণাদ"], answer: 3, explanation: "পরমাণুবাদ তত্ত্বের প্রবক্তা 'বৈশেষিক দর্শন'-এর শ্রেষ্ঠ আচার্য হলেন মহর্ষি কণাদ।" },
+  { question: "পূর্ব মীমাংসা দর্শন তত্ত্বের শ্রেষ্ঠ কে ছিলেন?", options: ["জৈমিনীয়","বেদব্যাস","গৌতম","পতঞ্জলি"], answer: 0, explanation: "'পূর্ব মীমাংসা'-র শ্রেষ্ঠ প্রবক্তা হলেন মহর্ষি জৈমিনীয়।" },
+  { question: "উত্তর মীমাংসা দর্শন তত্ত্বের শ্রেষ্ঠ কে ছিলেন?", options: ["কপিল","কণাদ","বেদব্যাস","গৌতম"], answer: 2, explanation: "'উত্তর মীমাংসা' (বেদান্ত দর্শন)-এর শ্রেষ্ঠ আচার্য হলেন মহর্ষি বেদব্যাস।" },
+  { question: "সংস্কৃত রামায়ণের রচয়িতা কে ছিলেন?", options: ["বেদব্যাস","বাল্মীকি","তুলসীদাস","কৃত্তিবাস ওঝা"], answer: 1, explanation: "আদি মহাকাব্য রামায়ণের মূল সংস্কৃত সংস্করণের রচয়িতা হলেন আদি কবি মহর্ষি বাল্মীকি।" },
+  { question: "রামায়ণ কয়টি কাণ্ডে বিভক্ত?", options: ["পাঁচটি","ছয়টি","সাতটি","আটটি"], answer: 2, explanation: "সমগ্র রামায়ণ মহাকাব্যটি মোট সাতটি প্রধান অধ্যায় বা 'কাণ্ড'-এ বিভক্ত।" },
+  { question: "মহাভারতের রচয়িতা কে ছিলেন?", options: ["কৃষ্ণ দ্বৈপায়ন বেদব্যাস","বাল্মীকি","কালিদাস","কাশীরাম দাস"], answer: 0, explanation: "বিশাল মহাকাব্য মহাভারতের মূল সংস্কৃত রূপের সংকলক ও রচয়িতা হলেন মহর্ষি কৃষ্ণ দ্বৈপায়ন বেদব্যাস।" },
+  { question: "মহাভারতের কয়টি পর্ব আছে?", options: ["১২টি","১৫টি","১৮টি","২৪টি"], answer: 2, explanation: "মহাভারত মহাকাব্যে মোট আঠারোটি (১৮) প্রধান পর্ব রয়েছে।" },
+  { question: "দশ রাজার যুদ্ধের উল্লেখ কোথায় আছে?", options: ["মহাভারতে","রামায়ণে","ঋগ্বেদে","পুরাণে"], answer: 2, explanation: "ভারতীয় ইতিহাসের অন্যতম প্রাচীন যুদ্ধ 'দশ রাজার যুদ্ধ'-এর বিস্তারিত বিবরণ ঋগ্বেদের সপ্তম মণ্ডলে পাওয়া যায়।" },
+  { question: "ঋকবৈদিক যুগে অনার্য ব্যবসায়ীদের কী বলা হত?", options: ["শ্রেষ্ঠী","পণি","মহাজন","বণিক"], answer: 1, explanation: "ঋকবৈদিক যুগে অনার্য প্রভাবশালী ব্যবসায়ীদের 'পণি' বলা হতো।" },
+  { question: "বেদে 'কুসীদ' কথাটির অর্থ কী?", options: ["ঋণ বা সুদ","সোনার মুদ্রা","পবিত্র জল","মাটির পাত্র"], answer: 0, explanation: "বৈদিক অর্থনৈতিক লেনদেনে 'কুসীদ' শব্দটির অর্থ ছিল ঋণ বা সুদের বিনিময়ে অর্থ ধার দেওয়া।" },
+  { question: "বৈদিক যুগের দুটি স্বর্ণমুদ্রার নাম লেখো।", options: ["টাকা ও আনা","দিনার ও দ্রম্ম","'মনা' ও 'নিষ্ক'","মোহর ও কড়ি"], answer: 2, explanation: "বৈদিক যুগে 'মনা' এবং 'নিষ্ক' নামের দুটি স্বর্ণখণ্ড বা স্বর্ণমুদ্রার প্রচলন ছিল।" },
+  { question: "আর্যরা ভারতে প্রথম কোন ধাতুর প্রচলন করে?", options: ["তামা","ব্রোঞ্জ","লোহা","দস্তা"], answer: 2, explanation: "আর্যরাই ভারতে প্রথম বড় আকারে লোহার তৈরি সরঞ্জাম ও অস্ত্রের প্রচলন শুরু করে।" },
+  { question: "ঋগ্বেদে ধানকে কী বলা হয়েছে?", options: ["যব","ব্রীহি","গোধূম","তণ্ডুল"], answer: 1, explanation: "ঋগ্বেদের শ্লোকে উৎপাদিত প্রধান শস্য ধানকে 'ব্রীহি' বলে উল্লেখ করা হয়েছে।" },
+  { question: "ঋগ্বেদে গমকে কী বলা হয়েছে?", options: ["ব্রীহি","যব","গোধূম","সর্ষপ"], answer: 2, explanation: "বৈদিক যুগে উৎপাদিত ফসল গম-কে বৈদিক সংস্কৃত ভাষায় 'গোধূম' বলা হতো।" },
+  { question: "ঋকবৈদিক যুগে লাঙলকে কী বলা হতো?", options: ["ফাল","লাঙল","শীর","কুঠার"], answer: 2, explanation: "কৃষিকার্যে জমি চাষ করার হাতিয়ার লাঙল-কে ঋকবৈদিক যুগে 'শীর' বলা হতো।" },
+  { question: "ঋগ্বেদে গাভিকে অবধ্যা হিসেবে কী বলা হয়েছে?", options: ["ধেনু","মাতা","অঘ্ন্যা","পবিত্র"], answer: 2, explanation: "ঋগ্বেদে গোরুকে কোনোভাবেই হত্যা না করার নির্দেশ দিয়ে 'অঘ্ন্যা' বলা হয়েছে।" },
+  { question: "ঋকবৈদিক যুগের অর্থনীতির ভিত্তি কী ছিল?", options: ["কুটির শিল্প","কৃষিকাজ","সামুদ্রিক বাণিজ্য","পশুপালন"], answer: 3, explanation: "ঋকবৈদিক যুগের আর্যদের জীবন ছিল মূলত পশুপালন ভিত্তিক, যেখানে গোধনকে প্রধান সম্পদ মনে করা হতো।" },
+  { question: "পরবর্তী বৈদিক যুগের অর্থনীতির ভিত্তি কী ছিল?", options: ["শুধু পশুপালন","শিকার করা","কৃষি","ধাতু শিল্প"], answer: 2, explanation: "পরবর্তী বৈদিক যুগে কৃষিকাজ আর্যদের অর্থনীতির মূল ভিত্তি হয়ে ওঠে।" },
+  { question: "আর্যসমাজে 'গ্রামণী' কাকে বলা হত?", options: ["রাজার প্রধান সেনাপতিকে","গ্রামের প্রধানকে","নগরের কর আদায়কারীকে","প্রধান পুরোহিতকে"], answer: 1, explanation: "বৈদিক যুগের গ্রামের প্রধানকে 'গ্রামণী' বলা হতো।" },
+  { question: "বৈদিক যুগে প্রজার কাছ থেকে রাজা কী কী কর আদায় করতেন?", options: ["জরিমানা ও দণ্ড কর","বলি, ভাগ ও শুল্ক","শুধু সোনা ও রূপা","কোনো কর নেওয়া হতো না"], answer: 1, explanation: "বৈদিক যুগে রাজা প্রজাদের কাছ থেকে বলি, ভাগ এবং শুল্ক আদায় করতেন।" },
+  { question: "আর্যদের বিনিময়ের প্রধান মাধ্যম কী ছিল?", options: ["রূপার পাত্র","তামার টুকরো","গোধন বা গোরু","লোহার রড"], answer: 2, explanation: "বৈদিক যুগে সম্পদ পরিমাপের ও বিনিময়ের প্রধানতম মাধ্যম ছিল গোধন বা গোরু।" },
+  { question: "ঋকবৈদিক যুগে 'গাভিষ্টি' কাকে বলা হতো?", options: ["গোরুর দুধ দোয়ানোকে","গোরু অনুসন্ধানকে (মতান্তরে গোরুর জন্য যুদ্ধকে)","সবচেয়ে ভালো জাতের গোরুকে","গোরুর বাসস্থান বা গোয়ালকে"], answer: 1, explanation: "ঋকবৈদিক যুগে গোরু হারিয়ে গেলে তা খুঁজে বের করার অভিযান বা গোরুর মালিকানা নিয়ে হওয়া যুদ্ধকে 'গাভিষ্টি' বলা হতো।" },
+  { question: "বৈদিক যুগের কয়েকটি যজ্ঞের নাম লেখো।", options: ["বাজপেয়","অশ্বমেধ","রাজসূয়","উপরোক্ত সবগুলি"], answer: 3, explanation: "রাজকীয় ক্ষমতা ও আধিপত্য প্রদর্শনের জন্য বৈদিক যুগে অশ্বমেধ, রাজসূয় এবং বাজপেয়ের মতো বিশাল যজ্ঞ করা হতো।" },
+  { question: "ম্যাক্সমুলারের মতে ঋগ্বেদের রচনাকাল কত?", options: ["আনুমানিক ৩০০০ খ্রিষ্ট পূর্বাব্দ","আনুমানিক ১২০০ খ্রিষ্ট পূর্বাব্দ","আনুমানিক ৫০০ খ্রিষ্ট পূর্বাব্দ","খ্রিষ্টপূর্ব ২০০০ অব্দ"], answer: 1, explanation: "বিখ্যাত ভারততত্ত্ববিদ ম্যাক্সমুলারের মতে ঋগ্বেদের আনুমানিক রচনাকাল হলো খ্রিষ্টপূর্ব ১২০০ অব্দ।" },
+  { question: "ঋকবৈদিক যুগে 'বিশ' বা 'জন' কী ছিল?", options: ["কয়েকটি গ্রাম একত্রিত হয়ে গঠিত প্রশাসনিক স্তর","এক ধরণের শস্য","বাজারের কর","সোনার অলঙ্কার"], answer: 0, explanation: "কয়েকটি গ্রাম বা কুল একত্রিত হয়ে 'বিশ' বা 'জন' (উপজাতি) গঠিত হতো।" },
+  { question: "বিশ বা জনের প্রধান শাসককে কী বলা হত?", options: ["গ্রামণী","সেনানী","গণপতি","বিশপতি বা রাজন"], answer: 3, explanation: "বৈদিক উপজাতি বা বিশ-এর প্রধান শাসককে 'বিশপতি' অথবা 'রাজন' বলা হতো।" },
+  { question: "সুদাস কে ছিলেন?", options: ["ভরত গোষ্ঠীর বিজয়ী রাজা","কুরু বংশের প্রতিষ্ঠাতা","ঋগ্বেদের একজন ঋষি","একজন বিখ্যাত অনার্য বণিক"], answer: 0, explanation: "রাজা সুদাস ছিলেন ঋগ্বেদে বর্ণিত বিখ্যাত দশ রাজার যুদ্ধের প্রধান চরিত্র এবং ভরত উপজাতির শক্তিশালী রাজা।" },
+  { question: "আর্য পরিবারের প্রধান কী নামে পরিচিত ছিলেন?", options: ["'গৃহপতি' বা 'কুলপতি'","পুরোহিত","রাজন","গ্রামণী"], answer: 0, explanation: "পিতৃতান্ত্রিক বৈদিক পরিবারে বয়োজ্যেষ্ঠ পুরুষকে 'গৃহপতি' বা 'কুলপতি' বলা হতো।" },
+  { question: "বেদ শব্দটি কোন শব্দ থেকে উৎপত্তি লাভ করেছে?", options: ["'বিদ' শব্দ থেকে","জ্ঞান শব্দ থেকে","শ্রুতি শব্দ থেকে","পূজা শব্দ থেকে"], answer: 0, explanation: "বেদ শব্দটি সংস্কৃত মূল ধাতু 'বিদ' থেকে এসেছে, যার অর্থ জানা বা জ্ঞান অর্জন।" },
+  { question: "ঋকবৈদিক যুগে নীচের কোন নদী 'পুরুষ্ণী' নামে পরিচিত ছিল?", options: ["বিয়াস","ঝিলাম","চেনাব","রাভি"], answer: 3, explanation: "সপ্ত-সিন্ধু অঞ্চলের রাভি নদী ঋকবৈদিক যুগে 'পুরুষ্ণী' নামে পরিচিত ছিল।" },
+  { question: "কোন যুগকে মহাকাব্যের যুগ বলা হয়?", options: ["ঋকবৈদিক যুগকে","বৈদিক যুগের পরবর্তী যুগকে","মৌর্য ও গুপ্ত সাম্রাজ্যের মধ্যবর্তী সময়কে","প্রাচীন প্রস্তর যুগকে"], answer: 1, explanation: "বৈদিক যুগের পরবর্তী সময়ে যখন রামায়ণ ও মহাভারত অবয়ব লাভ করে, সেই সময়কালকে মহাকাব্যের যুগ বলা হয়।" },
+  { question: "বৈদিক যুগে প্রেমের বিবাহকে কী বলা হত?", options: ["ব্রাহ্ম বিবাহ","দৈব বিবাহ","গান্ধর্ব বিবাহ","আর্ষ বিবাহ"], answer: 2, explanation: "গান্ধর্ব বিবাহ ছিল নারী ও পুরুষের পারস্পরিক প্রেম ও সম্মতির ভিত্তিতে সম্পন্ন বিবাহ।" },
+  { question: "বৈদিক যুগে কোন বিবাহকে সর্বাধিক মর্যাদাপূর্ণ বলে গণ্য করা হত?", options: ["গান্ধর্ব বিবাহ","ব্রাহ্ম বিবাহ","রাক্ষস বিবাহ","পৈশাচ বিবাহ"], answer: 1, explanation: "ব্রাহ্ম বিবাহ ছিল বৈদিক সমাজে সর্বাধিক মর্যাদাপূর্ণ বিবাহ।" },
+  { question: "বৈদিক যুগে অপহরণের মাধ্যমে সম্পন্ন বিবাহকে কী বলা হত?", options: ["পৈশাচ বিবাহ","অসুর বিবাহ","দৈব বিবাহ","রাক্ষস বিবাহ"], answer: 3, explanation: "রাক্ষস বিবাহে কন্যাকে বলপূর্বক অপহরণ করে বিবাহ করা হত।" },
+  { question: "বৈদিক যুগে পণ বা কন্যামূল্য প্রদান করে সম্পন্ন বিবাহকে কী বলা হত?", options: ["অসুর বিবাহ","আর্ষ বিবাহ","গান্ধর্ব বিবাহ","দৈব বিবাহ"], answer: 0, explanation: "অসুর বিবাহে বরপক্ষ কন্যার পরিবারকে অর্থ বা সম্পদ প্রদান করে কন্যাকে গ্রহণ করত।" },
+  { question: "ঋগ্বেদে 'কুলাল' কাকে বলা হয়েছে?", options: ["মৃৎ শিল্পীকে","তাঁতিদের","কামারদের","সোনার কারিগরদের"], answer: 0, explanation: "বৈদিক সংস্কৃত ভাষায় মৃৎশিল্পের সাথে যুক্ত কারিগর বা মাটির পাত্র প্রস্তুতকারীদের 'কুলাল' বলা হতো।" },
+  { question: "বৈদিক সাহিত্যে 'শ্রেষ্ঠী' কাদের বলা হয়েছে?", options: ["প্রধান পুরোহিতদের","ধনবান বণিকদের","রাজার মন্ত্রীদের","শ্রেষ্ঠ যোদ্ধাদের"], answer: 1, explanation: "বৈদিক যুগে প্রভাবশালী এবং ধনী উচ্চ স্তরের ব্যবসায়ীদের 'শ্রেষ্ঠী' বলা হতো।" },
+  { question: "ঋকবৈদিক যুগের কয়েকজন বিদুষী নারীর নাম লেখো।", options: ["গার্গী ও মৈত্রেয়ী","অপলা, ঘোষা, বিশ্ববরা, লোপামুদ্রা প্রমুখ","সীতা ও সাবিত্রী","দ্রৌপদী ও কুন্তী"], answer: 1, explanation: "ঋকবৈদিক যুগে অপলা, ঘোষা, বিশ্ববরা, লোপামুদ্রা প্রমুখ নারী বেদের স্তোত্র রচনা করেছিলেন।" },
+  { question: "বৈদিক যুগে চিকিৎসকদের কী বলা হতো?", options: ["কবিরাজ","বৈদ্য","ভিষক","ডাক্তার"], answer: 2, explanation: "প্রাচীন বৈদিক সাহিত্যে যারা ভেষজ উদ্ভিদের মাধ্যমে রোগের চিকিৎসা করতেন, তাদের 'ভিষক' বলা হতো।" },
+  { question: "পরবর্তী বৈদিক যুগে কোন কোন দেবতা প্রধান ছিলেন?", options: ["ইন্দ্র ও অগ্নি","প্রজাপতি (ব্রহ্মা), রুদ্র (শিব), বিষ্ণু","সূর্য ও চন্দ্র","গণেশ ও কার্তিক"], answer: 1, explanation: "পরবর্তী বৈদিক যুগে ত্রিমূর্তি অর্থাৎ ব্রহ্মা, বিষ্ণু ও শিবের ধারণা প্রধান হয়ে ওঠে।" },
+  { question: "পরবর্তী বৈদিক যুগে আর্যদের বসতি কোথায় প্রসারিত হয়?", options: ["দাক্ষিণাত্যের মালভূমিতে","সিন্ধু নদের ব-দ্বীপে","গাঙ্গেয় উপত্যকায়","কাশ্মীর উপত্যকায়"], answer: 2, explanation: "পরবর্তী বৈদিক যুগে আর্যরা পূর্ব দিকে অগ্রসর হয়ে গাঙ্গেয় উপত্যকায় বসতি স্থাপন করে।" },
+  { question: "কোন যুগে জমিতে ব্যক্তি মালিকানার প্রচলন হয়?", options: ["প্রাচীন প্রস্তর যুগে","ঋকবৈদিক যুগে","পরবর্তী বৈদিক যুগে","মৌর্য যুগে"], answer: 2, explanation: "পরবর্তী বৈদিক যুগে স্থায়ীভাবে কৃষিকাজ শুরু হলে জমিতে ব্যক্তিগত মালিকানার ধারণা তৈরি হয়।" },
+  { question: "বৈদিক যুগে উৎপাদিত ফসল কী কী?", options: ["শুধু আলু ও পটল","ধান, গম, যব, ডাল, তিল, আখ","শুধু চা ও কফি","কার্পাস ও নীল"], answer: 1, explanation: "বৈদিক আর্যদের প্রধান কৃষিজাত ফসলের মধ্যে ধান, গম, যব, ডাল, তিল ও আখ ছিল অন্যতম।" }
+];
+
+const TOTAL_T=3600;
+let curQ=0, answers=new Array(quizData.length).fill(null), timeLeft=TOTAL_T;
+let timerInt=null, quizStarted=false, quizFinished=false, startT=null;
+const gCor=()=>answers.filter((a,i)=>a!==null&&a!==-1&&a===quizData[i].answer).length;
+const gInc=()=>answers.filter((a,i)=>a!==null&&a!==-1&&a!==quizData[i].answer).length;
+const gSkp=()=>answers.filter(a=>a===-1).length;
+const gAns=()=>answers.filter(a=>a!==null&&a!==-1).length;
+const gScr=()=>gCor()-gInc()*0.25;
+const fmtT=s=>String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');
+
+function startQuiz(){
+  curQ=0; quizFinished=false;
+  answers=new Array(quizData.length).fill(null); timeLeft=TOTAL_T;
+  showOnly('quiz-screen');
+  document.getElementById('sticky-back').classList.remove('show');
+  document.getElementById('timer-el').style.display='flex';
+  buildQGrid(); renderQ(0); startTimer(); startT=Date.now(); quizStarted=true;
+  window.scrollTo(0,0);
+}
+function startTimer(){
+  timerInt=setInterval(()=>{
+    timeLeft--;
+    const el=document.getElementById('timer-el');
+    el.textContent='⏱ '+fmtT(timeLeft);
+    if(timeLeft<=300) el.classList.add('warn'); else el.classList.remove('warn');
+    if(timeLeft<=0){ clearInterval(timerInt); submitQuiz(); }
+  },1000);
+}
+function buildQGrid(){
+  const g=document.getElementById('q-grid'); g.innerHTML='';
+  quizData.forEach((_,i)=>{
+    const b=document.createElement('button'); b.className='qb'; b.textContent=i+1; b.id='qb'+i;
+    b.onclick=()=>renderQ(i); g.appendChild(b);
+  });
+}
+function updQB(i){ const b=document.getElementById('qb'+i); if(!b) return; b.className='qb'; if(i===curQ) b.classList.add('cur'); else if(answers[i]===-1) b.classList.add('skp'); else if(answers[i]!==null) b.classList.add(answers[i]===quizData[i].answer?'cor':'inc'); }
+function updAllQB(){ quizData.forEach((_,i)=>updQB(i)); }
+function renderQ(idx){
+  const q=quizData[idx]; curQ=idx;
+  document.getElementById('q-tag').textContent='প্রশ্ন '+(idx+1);
+  document.getElementById('q-prog').textContent=(idx+1)+' / '+quizData.length;
+  document.getElementById('q-num').textContent='Q.'+(idx+1);
+  document.getElementById('q-txt').textContent=q.question;
+  document.getElementById('prog-fill').style.width=((idx+1)/quizData.length*100)+'%';
+  const area=document.getElementById('opts'); area.innerHTML='';
+  q.options.forEach((opt,oi)=>{
+    const b=document.createElement('button'); b.className='opt';
+    b.innerHTML='<span class="opt-lbl">'+String.fromCharCode(65+oi)+'</span>'+opt;
+    b.onclick=()=>pick(oi); area.appendChild(b);
+  });
+  document.getElementById('exp-box').classList.remove('show');
+  document.getElementById('exp-txt').textContent=q.explanation||'';
+  if(answers[idx]!==null) showFeedback(idx);
+  document.getElementById('btn-prev').disabled=idx===0;
+  const last=idx===quizData.length-1;
+  document.getElementById('btn-next').style.display=last?'none':'';
+  document.getElementById('btn-fin').style.display=last?'':'none';
+  document.getElementById('btn-next').disabled=answers[idx]===null;
+  updStats(); updAllQB();
+}
+function pick(oi){
+  if(answers[curQ]!==null) return;
+  answers[curQ]=oi;
+  if(oi===quizData[curQ].answer) playCorrectSound(); else playWrongSound();
+  showFeedback(curQ); updStats(); updAllQB();
+  document.getElementById('btn-next').disabled=false;
+  setTimeout(()=>{ if(curQ<quizData.length-1) nextQ(); },700);
+}
+function showFeedback(idx){
+  const q=quizData[idx]; const opts=document.querySelectorAll('#opts .opt'); const ua=answers[idx];
+  opts.forEach(o=>{ o.classList.add('dis'); o.onclick=null; });
+  if(ua!==-1&&ua!==null){ opts[ua].classList.add(ua===q.answer?'cor':'inc'); if(ua!==q.answer) opts[q.answer].classList.add('cor'); document.getElementById('exp-box').classList.add('show'); }
+  else if(ua===-1){ opts[q.answer].classList.add('cor'); document.getElementById('exp-box').classList.add('show'); }
+}
+function nextQ(){ if(curQ<quizData.length-1) renderQ(curQ+1); }
+function prevQ(){ if(curQ>0) renderQ(curQ-1); }
+function skipQ(){
+  answers[curQ]=-1; updStats(); updAllQB();
+  if(curQ<quizData.length-1) renderQ(curQ+1);
+  else{ document.getElementById('btn-next').style.display='none'; document.getElementById('btn-fin').style.display=''; }
+}
+function updStats(){
+  document.getElementById('s-cor').textContent=gCor();
+  document.getElementById('s-inc').textContent=gInc();
+  document.getElementById('s-skp').textContent=gSkp();
+  const sc=gScr(); document.getElementById('s-scr').textContent=sc%1===0?sc:sc.toFixed(2);
+}
+function submitQuiz(){
+  if(quizFinished) return;
+  quizFinished=true; clearInterval(timerInt);
+  const elapsed=Math.floor((Date.now()-startT)/1000);
+  const mins=Math.floor(elapsed/60), secs=elapsed%60;
+  const cor=gCor(), inc=gInc(), skp=gSkp(), tot=quizData.length, sc=gScr(), pct=Math.round(cor/tot*100);
+  if(CU) document.getElementById('r-uline').textContent=CU.emoji+' '+CU.name+' — '+CU.role;
+  document.getElementById('r-score').innerHTML=`${sc%1===0?sc:sc.toFixed(2)}<span style="font-size:24px;color:rgba(255,255,255,.6)">/${tot}</span>`;
+  document.getElementById('r-pct').textContent=pct+'% সঠিক ('+cor+'/'+tot+')';
+  document.getElementById('r-cor').textContent=cor;
+  document.getElementById('r-inc').textContent=inc;
+  document.getElementById('r-skp').textContent=skp;
+  document.getElementById('r-net').textContent=sc%1===0?sc:sc.toFixed(2);
+  document.getElementById('r-tbig').textContent=String(mins).padStart(2,'0')+':'+String(secs).padStart(2,'0');
+  document.getElementById('r-tmins').textContent=mins;
+  document.getElementById('r-tsecs').textContent=secs;
+  const an2=gAns()+gSkp();
+  document.getElementById('r-perq').textContent=(an2>0?Math.round(elapsed/an2):0)+'s';
+  const msgs=['অসাধারণ! ইতিহাসের বিশেষজ্ঞ! 🏆','চমৎকার! অত্যন্ত ভালো! 🌟','খুব ভালো! আরও পড়ুন! 👍','ভালো! চালিয়ে যান! 📚','ঠিকঠাক! মনোযোগ দিন! 💪','হতাশ হবেন না! আবার চেষ্টা করুন! 📖'];
+  document.getElementById('r-msg').textContent=msgs[pct>=90?0:pct>=80?1:pct>=70?2:pct>=60?3:pct>=50?4:5];
+  const bars=document.getElementById('chart-bars'); bars.innerHTML='';
+  for(let i=0;i<tot;i+=10){
+    const end=Math.min(i+10,tot); let c=0,a=0;
+    for(let j=i;j<end;j++){ if(answers[j]!==null&&answers[j]!==-1){a++;if(answers[j]===quizData[j].answer)c++;} }
+    const h=a>0?(c/10)*64:0;
+    const b=document.createElement('div'); b.className='c-bar';
+    b.style.height=h+'px'; b.style.background=h/64>=.7?'#28a745':h/64>=.4?'#ffc107':'#e74c3c';
+    bars.appendChild(b);
+  }
+  showOnly('__none__');
+  document.getElementById('sticky-back').classList.remove('show');
+  const rs=document.getElementById('result-screen');
+  rs.style.display='block'; rs.classList.add('open');
+  document.getElementById('timer-el').style.display='none';
+  window.scrollTo(0,0);
+}
+function reviewAns(){
+  document.getElementById('result-screen').style.display='none';
+  document.getElementById('result-screen').classList.remove('open');
+  document.getElementById('quiz-screen').classList.add('active');
+  renderQ(0); window.scrollTo(0,0);
+}
+document.addEventListener('keydown',(e)=>{
+  if(!quizStarted||quizFinished) return;
+  if(e.key==='ArrowRight') nextQ();
+  else if(e.key==='ArrowLeft') prevQ();
+  else if(e.key===' '){ e.preventDefault(); skipQ(); }
+  else if(['1','2','3','4'].includes(e.key)){ if(answers[curQ]===null) pick(parseInt(e.key)-1); }
+});
+</script>
+</body>
+</html>
