@@ -855,11 +855,11 @@ const USERS = [
 ];
 
 // ══ STORAGE & SESSIONS ══
-const SK='itihaas_u_v5',SS='itihaas_s_v5',MAX_DEV=5,STO=24*60*60*1000;
+const SK='itihaas_u_v5',SS='itihaas_s_v5',MAX_DEV=2,STO=30*60*1000;
 function getStore(){ try{ const s=JSON.parse(localStorage.getItem(SK)||'null'); if(!s) return resetStore(); USERS.forEach(u=>{if(!s.find(x=>x.id===u.id))s.push({id:u.id,paid:u.admin});}); return s; }catch(e){return resetStore();} }
 function resetStore(){ const d=USERS.map(u=>({id:u.id,paid:u.admin})); localStorage.setItem(SK,JSON.stringify(d)); return d; }
 function setStore(d){ localStorage.setItem(SK,JSON.stringify(d)); }
-function isPaid(uid){ return true; } // All registered users are paid
+function isPaid(uid){ return !!(getStore().find(u=>u.id===uid)||{}).paid; }
 const DEVID=(()=>{ let id=localStorage.getItem('devid_v2'); if(!id){id='d'+Math.random().toString(36).substr(2,8)+Date.now(); localStorage.setItem('devid_v2',id);} return id; })();
 function getSess(uid){ try{ const now=Date.now(); return (JSON.parse(localStorage.getItem(SS)||'[]')).filter(s=>s.uid===uid&&(now-s.seen)<STO); }catch(e){return [];} }
 function regSess(uid){ try{ let a=JSON.parse(localStorage.getItem(SS)||'[]'); const now=Date.now(); a=a.filter(s=>(now-s.seen)<STO); const i=a.findIndex(s=>s.uid===uid&&s.dev===DEVID); if(i>=0)a[i].seen=now; else a.push({uid,dev:DEVID,seen:now}); localStorage.setItem(SS,JSON.stringify(a)); }catch(e){} }
@@ -911,6 +911,11 @@ function doPW(){
   if(!val){ showPWmsg('err','পাসওয়ার্ড খালি রাখা যাবে না।'); return; }
   const user=USERS.find(u=>u.pw===val);
   if(user){
+    const alreadyIn=thisDevIn(user.id), cnt=devCount(user.id);
+    if(!alreadyIn&&cnt>=MAX_DEV){
+      showPWmsg('dev',user.name+' এর '+MAX_DEV+'টি ডিভাইসে লগইন আছে।');
+      document.getElementById('pw-inp').value=''; return;
+    }
     CU=user; pwFail=0;
     regSess(user.id); startHB(user.id);
     document.getElementById('pw-av').textContent=user.emoji;
@@ -1043,7 +1048,7 @@ function renderSubjectCards(paid){
     const cornerHTML=isComing?'<span class="subj-corner soon-c">শীঘ্রই</span>':
       (paid?'':'<span class="subj-corner free-c">'+freeCh+' বিনামূল্যে</span>');
     return '<div class="subj-card'+(isComing?' soon':(!paid&&!subjectHasFree?' locked-card':''))+'"'+
-      (canEnter&&!isComing?' onclick="openSubject(''+s.id+'')"':'')+'>'+
+      (canEnter&&!isComing?' onclick="openSubject(\''+s.id+'\')"':'')+'>'+
       '<div class="subj-banner" style="background:'+s.color+'">'+s.icon+cornerHTML+'</div>'+
       '<div class="subj-body"><h3>'+s.title+'</h3><p>'+s.desc+'</p>'+
       '<div class="subj-metas">'+
@@ -1052,7 +1057,7 @@ function renderSubjectCards(paid){
       (totQ?'<span class="sm-t">❓ '+totQ+'+ প্রশ্ন</span>':'')+
       '</div><div class="subj-footer">'+
       (isComing?'<span style="font-size:13px;color:var(--gray-400);font-weight:600">🔔 শীঘ্রই আসছে</span>':
-        canEnter?'<button class="btn-enter" onclick="event.stopPropagation();openSubject(''+s.id+'')">প্রবেশ করুন →</button>':
+        canEnter?'<button class="btn-enter" onclick="event.stopPropagation();openSubject(\''+s.id+'\')">' + 'প্রবেশ করুন →</button>':
         '<button class="lo-btn" onclick="showUpgrade()">⭐ আপগ্রেড</button>')+
       '</div></div>'+lockHTML+'</div>';
   }).join('');
@@ -1103,7 +1108,7 @@ function openSubject(sid){
   document.getElementById('sub-sub').textContent=s.subs.length+'টি উপবিষয় পাওয়া গেছে';
   setBc([{label:'🏠',fn:'safeHome()'},{label:s.icon+' '+s.title}]);
   document.getElementById('st-grid').innerHTML=s.subs.map(st=>
-    '<div class="st-card" onclick="openSub(''+st.id+'')">'+
+    '<div class="st-card" onclick="openSub(\''+st.id+'\')">' +
     '<div class="st-ic">'+st.icon+'</div>'+
     '<div class="st-info"><h4>'+st.title+'</h4><p>'+st.chapters.length+'টি অধ্যায়</p></div>'+
     '<div class="st-arr">›</div></div>'
@@ -1130,7 +1135,7 @@ function openSub(stid){
     const mts=getMockTests(ch.id);
     const mtCount=mts.length;
     const freeMts=mts.filter(m=>m.free).length;
-    return '<div class="ch-card '+(ok?'ok':'locked')+'"'+(ok?' onclick="openChapter(''+ch.id+'')"':'')+'>'+
+    return '<div class="ch-card '+(ok?'ok':'locked')+'"'+(ok?' onclick="openChapter(\''+ch.id+'\')"':'')+'>'+
       '<div class="ch-body"><div class="ch-ic">'+ch.icon+'</div><h4>'+ch.title+'</h4>'+
       '<p>'+ch.desc+'</p>'+
       '<div class="ch-footer">'+
@@ -1169,9 +1174,9 @@ function openChapter(chid){
       if(isExt){
         actionHTML='<a class="btn-mt-ext" href="'+mt.url+'" target="_blank" rel="noopener">🔗 খুলুন ↗</a>';
       } else if(isQuiz){
-        actionHTML='<button class="btn-mt-start" onclick="openMockTest(''+mt.id+'')">▶ শুরু করুন</button>';
+        actionHTML='<button class="btn-mt-start" onclick="openMockTest(\''+mt.id+'\')">▶ শুরু করুন</button>';
       } else {
-        actionHTML='<button class="btn-mt-start" onclick="openMockTest(''+mt.id+'')">▶ শুরু করুন</button>';
+        actionHTML='<button class="btn-mt-start" onclick="openMockTest(\''+mt.id+'\')">▶ শুরু করুন</button>';
       }
     }
     return '<div class="mt-item '+(ok?'ok':'locked')+'">'+
@@ -1239,7 +1244,7 @@ function renderAdmin(){
     const paid=tmpP[u.id]; const dc=devCount(u.id);
     return '<tr><td><div style="display:flex;align-items:center;gap:7px"><span style="font-size:16px">'+u.emoji+'</span>'+
       '<div><div style="font-weight:700;font-size:14px">'+u.name+'</div><div style="font-size:11px;color:var(--gray-400)">'+u.role+'</div></div></div></td>'+
-      '<td><button class="status-tog '+(paid?'paid':'free')+'" id="tog-'+u.id+'" onclick="togP(''+u.id+'')">'+(paid?'⭐ PAID':'🔓 FREE')+'</button></td>'+
+      '<td><button class="status-tog '+(paid?'paid':'free')+'" id="tog-'+u.id+'" onclick="togP(\''+u.id+'\')">'+(paid?'⭐ PAID':'🔓 FREE')+'</button></td>'+
       '<td style="font-size:12px;color:'+(dc>0?'var(--blue)':'var(--gray-400)')+'">'+dc+'/'+MAX_DEV+' ডিভাইস</td></tr>';
   }).join('');
   document.getElementById('u-mgmt').innerHTML='<table class="u-table"><thead><tr><th>ব্যবহারকারী</th><th>স্ট্যাটাস</th><th>ডিভাইস</th></tr></thead><tbody>'+rows+'</tbody></table>';
